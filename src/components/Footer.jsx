@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import site from '../site.config.js';
 import Icon, { BRIDGE } from './Icon.jsx';
-import { telHref, isPlaceholder } from '../format.js';
+import { telHref, isPlaceholder, publishable } from '../format.js';
 
 export default function Footer() {
   const { street, city, region, postal } = site.address;
   const hasAddress = street || city;
+  const areas = publishable(site.serviceArea);
 
   return (
     <footer className="footer">
@@ -68,14 +69,16 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3>Areas We Serve</h3>
-            <ul>
-              {site.serviceArea.map((area) => (
-                <li key={area}>{isPlaceholder(area) ? <em>{area}</em> : area}</li>
-              ))}
-            </ul>
-          </div>
+          {areas.length > 0 && (
+            <div>
+              <h3>Areas We Serve</h3>
+              <ul>
+                {areas.map((area) => (
+                  <li key={area}>{isPlaceholder(area) ? <em>{area}</em> : area}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="footer__bottom">

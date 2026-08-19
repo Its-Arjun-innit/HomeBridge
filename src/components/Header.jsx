@@ -46,9 +46,13 @@ export default function Header() {
 
         <Nav />
 
-        <a className="btn btn--primary header__phone" href={telHref(site.phone)}>
+        <a
+          className="btn btn--primary header__phone"
+          href={telHref(site.phone)}
+          aria-label={`Call HomeBridge Care Services at ${site.phone}`}
+        >
           <Icon paths={PHONE} size={19} />
-          {site.phone}
+          <span className="header__phone-num">{site.phone}</span>
         </a>
 
         <details className="menu-toggle" ref={menu}>

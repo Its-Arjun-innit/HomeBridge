@@ -4,6 +4,7 @@ import InquiryForm from '../components/InquiryForm.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
 import Reveal from '../components/Reveal.jsx';
 import Icon, { CHECK } from '../components/Icon.jsx';
+import site from '../site.config.js';
 
 // TODO: confirm — every item below describes the role in general terms only.
 // Replace with HomeBridge's actual requirements, certifications, pay structure,
@@ -68,7 +69,10 @@ export default function Careers() {
         lede="Our caregivers are the whole of what we offer. We look for people who treat clients the way they’d want their own family treated."
       >
         <div className="grid grid--3">
-          {EXPECTATIONS.map((e, i) => (
+          {(site.showDraftContent
+            ? EXPECTATIONS
+            : EXPECTATIONS.filter((e) => !e.body.includes('TODO'))
+          ).map((e, i) => (
             <Reveal key={e.title} i={i} fill>
               <article className="card service-card">
                 <span className="service-card__bullet">

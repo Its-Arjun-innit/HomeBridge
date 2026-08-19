@@ -2,12 +2,18 @@ import Hero from '../components/Hero.jsx';
 import Section from '../components/Section.jsx';
 import CallToAction from '../components/CallToAction.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
+import site from '../site.config.js';
 import { faqs } from '../content.js';
+import { telHref } from '../format.js';
 
 // Native <details>/<summary>: keyboard and screen-reader behaviour for free,
 // and it works before React hydrates. ponytail: no accordion library.
 export default function FAQ() {
-  const draft = faqs.filter((f) => f.a.includes('TODO')).length;
+  const isDraft = (f) => f.a.includes('TODO');
+  const draft = faqs.filter(isDraft).length;
+  // Visitors see only questions that have a real answer. Drafts stay visible
+  // while developing so the remaining work is impossible to forget.
+  const shown = site.showDraftContent ? faqs : faqs.filter((f) => !isDraft(f));
 
   return (
     <>
@@ -19,7 +25,7 @@ export default function FAQ() {
       </Hero>
 
       <Section>
-        {draft > 0 && (
+        {draft > 0 && site.showDraftContent && (
           <p className="form-status form-status--warn" style={{ maxWidth: '52rem' }} data-reveal>
             <strong>Note for the site owner:</strong> {draft} of these {faqs.length} answers
             contain <code>TODO: confirm</code> placeholders. They describe how home care
@@ -31,7 +37,21 @@ export default function FAQ() {
 
         <div className="split split--aside">
           <div className="faq" data-reveal>
-            {faqs.map((f) => (
+            {/* Every answer is still a draft, so there is nothing to publish yet.
+                An empty page is worse than none — point people at the phone. */}
+            {shown.length === 0 && (
+              <div className="faq-empty">
+                <h2>We’re still writing these up.</h2>
+                <p>
+                  In the meantime, the fastest way to get a straight answer about hours,
+                  costs, or how we match caregivers is simply to ask us.
+                </p>
+                <a className="btn btn--primary" href={telHref(site.phone)}>
+                  Call {site.phone}
+                </a>
+              </div>
+            )}
+            {shown.map((f) => (
               <details key={f.q}>
                 <summary>{f.q}</summary>
                 <div>{f.a}</div>

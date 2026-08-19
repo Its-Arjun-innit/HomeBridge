@@ -3,12 +3,13 @@ import Section from '../components/Section.jsx';
 import InquiryForm from '../components/InquiryForm.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
 import site from '../site.config.js';
-import { telHref, isPlaceholder } from '../format.js';
+import { telHref, isPlaceholder, publishable } from '../format.js';
 import Icon, { PHONE, MAIL } from '../components/Icon.jsx';
 
 export default function Contact() {
   const { street, city, region, postal } = site.address;
   const hasAddress = street || city;
+  const areas = publishable(site.serviceArea);
 
   return (
     <>
@@ -67,12 +68,16 @@ export default function Contact() {
               <ImageSlot id="contact-office" />
             </div>
 
-            <h3 style={{ marginTop: '2.5rem' }}>Areas we serve</h3>
-            <ul style={{ color: 'var(--ink-soft)', paddingLeft: '1.2rem' }}>
-              {site.serviceArea.map((area) => (
-                <li key={area}>{isPlaceholder(area) ? <em>{area}</em> : area}</li>
-              ))}
-            </ul>
+            {areas.length > 0 && (
+              <>
+                <h3 style={{ marginTop: '2.5rem' }}>Areas we serve</h3>
+                <ul style={{ color: 'var(--ink-soft)', paddingLeft: '1.2rem' }}>
+                  {areas.map((area) => (
+                    <li key={area}>{isPlaceholder(area) ? <em>{area}</em> : area}</li>
+                  ))}
+                </ul>
+              </>
+            )}
             <div style={{ marginTop: '1.25rem' }}>
               <ImageSlot id="contact-map" />
             </div>

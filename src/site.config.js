@@ -28,9 +28,20 @@ export default {
   serviceArea: ['TODO: add the cities and regions you serve'],
 
   // Show a labelled placeholder panel wherever a photo hasn't been supplied yet
-  // (see src/images.js). These are visible to visitors on the live site.
-  // Change to `import.meta.env.DEV` to show them only while developing.
-  showEmptyImageSlots: true,
+  // (see src/images.js). Development only — on the live site an unfilled slot
+  // collapses to nothing, so visitors never see dashed boxes or slot ids.
+  // Set to `true` to preview them in a production build.
+  showEmptyImageSlots: import.meta.env.DEV,
+
+  // Show unfinished content that is addressed to you rather than to visitors:
+  // the FAQ "note for the site owner" banner, answers and Careers items still
+  // marked TODO: confirm, and testimonials flagged as placeholders.
+  // Development only, so none of it reaches a real visitor. Set to `true` if you
+  // want to preview it in a production build.
+  //
+  // NOTE: with this off, the FAQ shows only questions you have actually
+  // answered, and the testimonials section disappears until you add real ones.
+  showDraftContent: import.meta.env.DEV,
 
   // Formspree form ID (the part after /f/ in your endpoint URL).
   // Leave empty and the form refuses to submit rather than posting nowhere.

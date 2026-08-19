@@ -327,10 +327,12 @@ export default function InquiryForm({ variant = 'care', title, note }) {
         </ol>
       </div>
 
-      {/* tabIndex -1 so focus can be moved here on each step change. */}
-      <h3 className="wizard__title" tabIndex={-1} ref={headingRef}>
+      {/* h2, not h3: on the home page this sits directly under the h1, and
+          skipping a level breaks the heading outline for screen readers.
+          tabIndex -1 so focus can be moved here on each step change. */}
+      <h2 className="wizard__title" tabIndex={-1} ref={headingRef}>
         {STEP_TITLES[step]}
-      </h3>
+      </h2>
       {stepIndex === 0 && note && <p className="form-card__note">{note}</p>}
 
       {statusBanner}

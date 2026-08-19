@@ -2,6 +2,7 @@ import { testimonials } from '../content.js';
 import Section from './Section.jsx';
 import ImageSlot from './ImageSlot.jsx';
 import Reveal from './Reveal.jsx';
+import site from '../site.config.js';
 
 /**
  * Renders whatever is in `testimonials`. Entries flagged `placeholder: true`
@@ -10,12 +11,17 @@ import Reveal from './Reveal.jsx';
  * from Home.jsx until you have some.
  */
 export default function Testimonials() {
-  if (!testimonials.length) return null;
+  // Never publish a placeholder review — the section simply doesn't exist until
+  // there are real, attributed quotes to show.
+  const shown = site.showDraftContent
+    ? testimonials
+    : testimonials.filter((t) => !t.placeholder);
+  if (!shown.length) return null;
 
   return (
     <Section tone="tint" eyebrow="In their words" title="What families tell us" center>
       <div className="grid grid--3">
-        {testimonials.map((t, i) => (
+        {shown.map((t, i) => (
           <Reveal key={t.name + i} i={i} fill>
             <figure className="quote-card">
               {t.placeholder && (

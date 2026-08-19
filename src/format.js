@@ -8,3 +8,12 @@ export function telHref(phone = '') {
 export function isPlaceholder(value) {
   return typeof value === 'string' && value.trim().toUpperCase().startsWith('TODO');
 }
+
+/**
+ * Drops unedited placeholders in a production build, keeps them while
+ * developing. A visitor should never be shown the word "TODO"; the owner
+ * still needs the reminder on screen.
+ */
+export function publishable(list = []) {
+  return import.meta.env.DEV ? list : list.filter((v) => !isPlaceholder(v));
+}

@@ -423,8 +423,20 @@ a {
 }
 
 @media (max-width: 62rem) {
-  .header__bar > .nav,
-  .header__bar > .header__phone {
+  .header__bar {
+    gap: 0.6rem;
+  }
+  .header__bar > .nav {
+    display: none;
+  }
+  /* The phone stays in the bar rather than hiding behind the menu — calling is
+     the highest-intent action on the site and most visitors are on a phone.
+     It collapses to the icon so it still fits beside the menu button; the link
+     carries an aria-label so it is announced with the number. */
+  .header__phone {
+    padding-inline: 0.9rem;
+  }
+  .header__phone-num {
     display: none;
   }
   .menu-toggle {
@@ -779,7 +791,14 @@ a {
   background: var(--teal-700);
 }
 
+/* An h2 for outline correctness, but sized as a card heading — it should not
+   compete with the section headings around it. */
 .wizard__title {
+  font-family: var(--sans);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
   margin-bottom: 1rem;
 }
 .wizard__title:focus {
@@ -1012,7 +1031,12 @@ a {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.6rem;
+  gap: 0.5rem;
+}
+/* Inline links were 22px tall — under the 24px minimum in WCAG 2.5.8. */
+.footer ul a {
+  display: inline-block;
+  padding-block: 0.2rem;
 }
 .footer__brand .brand__name,
 .footer__brand .brand__sub {
@@ -1307,4 +1331,17 @@ a {
   .figure img {
     transform: none !important;
   }
+}
+
+/* Shown when no FAQ answer is finished yet. */
+.faq-empty {
+  padding: 1rem 0 2rem;
+}
+.faq-empty h2 {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+}
+.faq-empty p {
+  color: var(--ink-soft);
+  max-width: 34rem;
+  margin-bottom: 1.75rem;
 }
