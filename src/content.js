@@ -31,6 +31,7 @@ export const vision =
 export const values = [
   {
     title: 'Care with Compassion',
+    slot: 'value-compassion',
     body: 'We treat every client the way we would want our own family treated—with warmth, patience, and genuine attention.',
     icon: [
       'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z',
@@ -38,6 +39,7 @@ export const values = [
   },
   {
     title: 'Personalized Care Plans',
+    slot: 'value-personalized',
     body: 'Care is shaped around one person’s routine, preferences, and needs—never a fixed package handed to everyone.',
     icon: [
       'M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1z',
@@ -47,11 +49,13 @@ export const values = [
   },
   {
     title: 'Reliable and Flexible',
+    slot: 'value-reliable',
     body: 'From a few hours a week to ongoing daily support, our schedules adapt as needs change.',
     icon: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 7.5V12l3 2'],
   },
   {
     title: 'Dignity and Respect',
+    slot: 'value-dignity',
     body: 'Independence is the goal of every visit. We support what someone can still do, rather than doing it for them.',
     icon: ['M12 3l7 3v6c0 4.4-3 8.2-7 9-4-.8-7-4.6-7-9V6l7-3z', 'M9 12l2 2 4-4'],
   },

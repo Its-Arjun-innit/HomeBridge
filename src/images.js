@@ -19,13 +19,18 @@ const slot = (ratio, hint, src = '', alt = '') => ({ ratio, hint, src, alt });
 
 export const slots = {
   // ── Home ───────────────────────────────────────────────────────────────────
-  'home-promise': slot('3 / 4', 'A caregiver and client talking together in a bright living room'),
+  'home-promise': slot(
+    '3 / 4',
+    'Supplied by the design export',
+    '/media/promise-reading.webp',
+    'An older woman reading by a window in soft daylight.',
+  ),
   'home-band': slot('21 / 9', 'Wide, calm shot of a home interior — a kitchen table, a sunlit window'),
   'home-story': slot(
     '4 / 3',
-    'A caregiver helping someone with an everyday task, both at ease',
-    '/media/hero.webp',
-    'A caregiver and an older adult together at home.',
+    'Supplied by the design export',
+    '/media/family-story.webp',
+    'A thoughtful woman in soft natural light.',
   ),
   'home-cta-bg': slot('21 / 9', 'Soft, out-of-focus home background — this sits behind text, so nothing busy'),
 
@@ -36,6 +41,16 @@ export const slots = {
   'home-service-meals': slot('4 / 3', 'A home-cooked meal being prepared'),
   'home-service-housekeeping': slot('4 / 3', 'A tidy, uncluttered living space'),
   'home-service-companionship': slot('4 / 3', 'Two people talking over tea, laughing'),
+
+  // ── Photography from the design export ─────────────────────────────────────
+  'value-compassion': slot('3 / 4', 'From the design export', '/media/value-compassion.webp', 'A caregiver gently assisting someone seated in a warm, light-filled room.'),
+  'value-personalized': slot('3 / 4', 'From the design export', '/media/value-personalized.webp', 'An older person’s hands resting in a caregiver’s hands.'),
+  'value-reliable': slot('3 / 4', 'From the design export', '/media/value-reliable.webp', 'A quiet living-room corner with a cup of tea and an open book.'),
+  'value-dignity': slot('3 / 4', 'From the design export', '/media/value-dignity.webp', 'An older man gardening in a sunlit courtyard, hands in the soil.'),
+  'svc-personal-care': slot('21 / 10', 'From the design export', '/media/svc-personal-care.webp', 'Gentle assistance with everyday tasks at home.'),
+  'svc-meals': slot('21 / 10', 'From the design export', '/media/svc-meals.webp', 'Fresh vegetables and a prepared meal in a sunlit kitchen.'),
+  'svc-companionship': slot('21 / 10', 'From the design export', '/media/svc-companionship.webp', 'Two people laughing together over tea in a cosy living room.'),
+  'svc-housekeeping': slot('21 / 10', 'From the design export', '/media/svc-housekeeping.webp', 'A bright, freshly organised living space.'),
 
   // ── Testimonials (small round portraits) ───────────────────────────────────
   'testimonial-1': slot('1 / 1', 'Portrait of the person quoted — only with their permission'),

@@ -34,12 +34,11 @@ visible "Placeholder — not a real review" badge. Swap in genuine, attributed r
 you have permission to publish, or delete the `<Testimonials />` line from
 `src/pages/Home.jsx` until you have some. Do not publish invented reviews.
 
-**4. Add photos.** `src/images.js` is the checklist — 41 slots across the six
-pages, each with a suggested subject. Every unfilled slot currently renders a
-labelled placeholder panel **on the live site**, so visitors see them too. To fill
-one: drop the file in `public/media/`, set `src` and `alt` in `images.js`, done.
-To hide unfilled slots instead, set `showEmptyImageSlots: import.meta.env.DEV` in
-`src/site.config.js`.
+**4. Add photos.** `src/images.js` is the checklist. Ten slots are filled from the
+design export (see below); the rest are empty. Unfilled slots show a labelled
+placeholder while developing and collapse to nothing in production, so visitors
+never see them. To fill one: drop the file in `public/media/`, set `src` and `alt`
+in `images.js`, done.
 
 **5. Resolve every `TODO: confirm`.** Search the repo for that string. Each one marks
 a place where the copy would otherwise assert something about how HomeBridge operates
@@ -51,9 +50,9 @@ build-time warning banner listing how many remain; it disappears once they're go
 ## Deploying
 
 Static host, output is `dist/`. Because routing is client-side, the host must serve
-`index.html` for unknown paths. `public/_redirects` handles this on Netlify; on Vercel
-add a rewrite, on Apache a `.htaccess` fallback, on nginx `try_files $uri /index.html`.
-Without it, a direct visit to `/services` 404s.
+`index.html` for unknown paths — without it, a direct visit to `/services` 404s.
+`vercel.json` covers Vercel (in use) and `public/_redirects` covers Netlify. On
+Apache use a `.htaccess` fallback, on nginx `try_files $uri /index.html`.
 
 ## Assets
 
@@ -69,6 +68,22 @@ ffmpeg -y -i "Elements/Opening Eledery Heart video.mp4" -an -c:v copy -movflags 
 
 The hero background went 25.5 MB → 632 KB. The hero video only loads above 992px wide
 and never when the visitor has reduced-motion set; phones get the 114 KB poster still.
+
+## Design source
+
+The visual language comes from `uxpilot-export-08-19-26.fig` (a UX Pilot export).
+It is a ZIP holding `canvas.fig` — Figma's `fig-kiwi` format: a deflate-compressed
+Kiwi schema followed by a **zstd**-compressed scene graph — plus ten JPEGs, which
+are now the site's photography in `public/media/`.
+
+Taken from it: the paper/panel/ink/gold palette, Cormorant Garamond + Inter,
+12px eyebrows with wide tracking, square corners, hairline rules, the staggered
+image-panel grid, and the numbered service rows. The words are HomeBridge's own
+copy — only the arrangement is the design's.
+
+Two deliberate departures, both documented at the point of use in `styles.css`:
+body copy is held at 16px where the design uses 14px, and gold (`#b09164`) is
+2.85:1 on paper so it is used only as a mark, never behind text.
 
 ## Notes
 

@@ -4,37 +4,45 @@
    below 16px. */
 
 :root {
-  --ink: #12211f;
-  --ink-soft: #46554f;
+  /* Palette taken from the UX Pilot design export (uxpilot-export-08-19-26.fig).
+     Warm paper, sand panels, near-black ink, gold used only as an accent mark —
+     it is 2.85:1 on paper, so it never carries text. */
+  --paper: #fbfaf8;
+  --panel: #f3eee3;
+  --gold: #b09164;
 
-  --teal-900: #123b37;
-  --teal-700: #1f4e4a;
-  --teal-500: #2f6f69;
-  --teal-100: #dce9e6;
-  --teal-50: #eef5f3;
+  --ink: #1a1a18;
+  --ink-soft: #5c574f; /* 6.9:1 on paper */
+  --line: rgb(26 26 24 / 0.14);
 
-  --sand: #f7f1e6;
-  --sand-50: #fdfbf7;
-  --sand-200: #ece3d2;
+  /* Existing token names kept so every page inherits the new look without a
+     rename sweep. They now point at the design's values. */
+  --teal-900: #1a1a18;
+  --teal-700: #2f2b26;
+  --teal-500: #5c574f;
+  --teal-100: #e4dccc;
+  --teal-50: #f3eee3;
 
-  /* Text/button accent. AA on both sand (5.1:1) and white; white on it is 5.6:1. */
-  --clay: #a34f30;
-  /* Decorative only — never behind or as text. */
-  --clay-soft: #c56b4a;
+  --sand: #fbfaf8;
+  --sand-50: #ffffff;
+  --sand-200: #e8e1d4;
 
-  --on-dark: #e9f0ed;
+  --clay: #7d6134; /* AA-safe gold for text: 5.5:1 on paper */
+  --clay-soft: #b09164;
 
-  --radius: 14px;
-  --radius-sm: 9px;
-  --shadow: 0 1px 2px rgb(18 33 31 / 0.05), 0 12px 32px -12px rgb(18 33 31 / 0.18);
-  --shadow-lg: 0 2px 4px rgb(18 33 31 / 0.06), 0 28px 60px -20px rgb(18 33 31 / 0.28);
+  --on-dark: #e8e4dc;
 
-  --wrap: 1180px;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
-  --section-y: clamp(4rem, 9vw, 7.5rem);
+  --radius: 0px;
+  --radius-sm: 0px;
+  --shadow: 0 1px 2px rgb(26 26 24 / 0.04), 0 18px 40px -24px rgb(26 26 24 / 0.22);
+  --shadow-lg: 0 2px 4px rgb(26 26 24 / 0.05), 0 34px 70px -28px rgb(26 26 24 / 0.3);
 
-  --sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --wrap: 1344px;
+  --gutter: clamp(1.25rem, 3.4vw, 3rem);
+  --section-y: clamp(4rem, 11vw, 10rem);
+
+  --sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
 
   --dur-fast: 0.18s;
   --dur: 0.32s;
@@ -59,7 +67,7 @@ body {
   color: var(--ink);
   font-family: var(--sans);
   font-size: 1.125rem; /* 18px */
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -73,26 +81,27 @@ h1,
 h2,
 h3 {
   font-family: var(--serif);
-  font-weight: 300;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  color: var(--teal-900);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--ink);
   text-wrap: balance;
   margin: 0 0 0.5em;
 }
 
+/* 96px in the design at 1440; scaled down fluidly. */
 h1 {
-  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-size: clamp(2.9rem, 6.7vw, 6rem);
 }
 h2 {
-  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  font-size: clamp(2.1rem, 3.4vw, 3rem);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
 }
 h3 {
-  font-size: 1.3rem;
-  font-family: var(--sans);
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.35;
+  font-size: clamp(1.6rem, 2.2vw, 2.25rem);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
 p {
@@ -154,15 +163,15 @@ a {
 }
 
 .eyebrow {
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--clay);
-  margin: 0 0 0.9rem;
+  color: var(--ink-soft);
+  margin: 0 0 1.2rem;
 }
 .section--teal .eyebrow {
-  color: #e6b39c;
+  color: var(--gold);
 }
 
 .lede {
@@ -198,10 +207,12 @@ a {
   min-height: 3rem;
   padding: 0.7rem 1.6rem;
   border: 2px solid transparent;
-  border-radius: 999px;
+  border-radius: 0;
   font: inherit;
-  font-weight: 600;
-  font-size: 1.0625rem;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
@@ -212,7 +223,7 @@ a {
   .btn--primary:hover,
   .btn--accent:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 22px -10px rgb(18 33 31 / 0.55);
+    box-shadow: 0 12px 26px -12px rgb(26 26 24 / 0.5);
   }
 }
 .btn:active {
@@ -233,7 +244,7 @@ a {
   color: #fff;
 }
 .btn--accent:hover {
-  background: #8b422a;
+  background: #5f4926;
 }
 
 .btn--ghost {
@@ -282,7 +293,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgb(247 241 230 / 0.92);
+  background: rgb(251 250 248 / 0.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--sand-200);
 }
@@ -309,9 +320,10 @@ a {
 .brand__name {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 1.35rem;
+  font-size: 1.85rem;
+  font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
 }
 .brand__sub {
   display: block;
@@ -334,8 +346,10 @@ a {
   min-height: 2.75rem;
   padding: 0.35rem 0.85rem;
   border-radius: var(--radius-sm);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--ink);
   text-decoration: none;
 }
@@ -351,8 +365,8 @@ a {
   right: 0.85rem;
   bottom: 0.35rem;
   height: 2px;
-  background: var(--clay);
-  border-radius: 2px;
+  background: var(--gold);
+  border-radius: 0;
   transform: scaleX(0);
   transition: transform var(--dur) var(--ease);
 }
@@ -469,9 +483,9 @@ a {
   inset: 0;
   background: linear-gradient(
       100deg,
-      rgb(18 59 55 / 0.94) 0%,
-      rgb(18 59 55 / 0.82) 42%,
-      rgb(18 59 55 / 0.55) 100%
+      rgb(26 26 24 / 0.93) 0%,
+      rgb(26 26 24 / 0.8) 42%,
+      rgb(26 26 24 / 0.5) 100%
     );
 }
 .hero__inner {
@@ -1023,7 +1037,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #9dc0b8;
+  color: var(--gold);
   margin-bottom: 1rem;
 }
 .footer ul {
@@ -1043,7 +1057,7 @@ a {
   color: #fff;
 }
 .footer__brand .brand__sub {
-  color: #9dc0b8;
+  color: var(--gold);
 }
 .footer__bottom {
   margin-top: 3rem;
@@ -1053,8 +1067,10 @@ a {
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
   justify-content: space-between;
-  font-size: 0.95rem;
-  color: #9dc0b8;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(232 228 220 / 0.65);
 }
 
 /* ---------- Testimonials ---------- */
@@ -1135,11 +1151,11 @@ a {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgb(247 241 230 / 0.22), rgb(247 241 230 / 0.06) 45%);
+  background: linear-gradient(to bottom, rgb(243 238 227 / 0.2), rgb(243 238 227 / 0.05) 45%);
 }
 .section--teal .figure--fade::after,
 .hero .figure--fade::after {
-  background: linear-gradient(to bottom, rgb(18 59 55 / 0.32), rgb(18 59 55 / 0.12) 45%);
+  background: linear-gradient(to bottom, rgb(26 26 24 / 0.3), rgb(26 26 24 / 0.1) 45%);
 }
 
 .figure--plain {
@@ -1344,4 +1360,231 @@ a {
   color: var(--ink-soft);
   max-width: 34rem;
   margin-bottom: 1.75rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Home page — layouts taken from uxpilot-export-08-19-26.fig
+   Editorial grid, Cormorant display type, sand image panels, gold hairlines.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Rule under the hero: EST. 2024 —————— HOMEBRIDGE CARE SERVICES */
+.markrule {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding-top: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-dark);
+}
+.markrule__line {
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+}
+.markrule--ink {
+  color: var(--ink-soft);
+}
+
+/* Small gold dot used as a live/accent mark in the design. */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex: none;
+}
+
+/* ── Promise: big serif statement beside a short list ── */
+.promise {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+.promise__statement {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.9vw, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 0 0 2rem;
+  text-wrap: balance;
+}
+.promise__body {
+  max-width: 42rem;
+  color: var(--ink-soft);
+}
+.promise__list {
+  list-style: none;
+  margin: 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 1rem;
+}
+.promise__list li {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+}
+@media (max-width: 62rem) {
+  .promise {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── Values: two columns of tall image panels, the right one dropped 96px ── */
+.stagger {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3.4vw, 3rem);
+}
+.stagger > *:nth-child(even) {
+  margin-top: clamp(2rem, 6.7vw, 6rem);
+}
+@media (max-width: 52rem) {
+  .stagger {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .stagger > *:nth-child(even) {
+    margin-top: 0;
+  }
+}
+
+.panel {
+  background: var(--panel);
+}
+.panel .figure {
+  aspect-ratio: 3 / 4;
+}
+.panel__caption {
+  padding-top: 1.5rem;
+}
+.panel__caption h3 {
+  margin-bottom: 0.6rem;
+}
+.panel__caption p {
+  /* Design says 14px; held at 16px — the audience is seniors and their families. */
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 34rem;
+}
+
+/* ── Services: numbered rows separated by hairlines ── */
+.rows {
+  border-top: 1px solid var(--line);
+}
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 21rem;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding-block: clamp(1.75rem, 3.4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+.row__num {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--ink-soft);
+  min-width: 2.5rem;
+}
+.row__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.7vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 0;
+  transition: color var(--dur) var(--ease);
+}
+.row__body {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  max-width: 38rem;
+}
+.row__media {
+  justify-self: end;
+  width: 100%;
+  max-width: 21rem;
+}
+.row__media .figure {
+  aspect-ratio: 21 / 10;
+}
+@media (hover: hover) {
+  .row:hover .row__title {
+    color: var(--clay);
+  }
+}
+@media (max-width: 62rem) {
+  .row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .row__media {
+    grid-column: 1 / -1;
+    max-width: none;
+    justify-self: stretch;
+  }
+}
+
+/* ── Family story: portrait beside a large pull quote ── */
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.85fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+.story__portrait {
+  background: var(--panel);
+}
+.story__portrait .figure {
+  aspect-ratio: 4 / 5;
+}
+.story__quote {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.6vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  text-wrap: balance;
+}
+.story__attrib {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+.story__attrib strong {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.story__attrib span {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+@media (max-width: 62rem) {
+  .story {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
