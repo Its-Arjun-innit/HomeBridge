@@ -130,19 +130,15 @@ export const careForOptions = [
   'Someone else',
 ];
 
-/** Step 2 checkboxes. Short labels — the full descriptions live in `services`. */
+/** Step 2 checkboxes. Kept short deliberately — every extra option is another
+    decision between a visitor and getting in touch. The full list of 11 services
+    lives in `services` and on the Services page. */
 export const helpWithOptions = [
   { slug: 'personal-care', label: 'Personal care' },
-  { slug: 'bathing', label: 'Bathing and hygiene' },
-  { slug: 'grooming', label: 'Grooming and dressing' },
   { slug: 'meals', label: 'Meals and cooking' },
-  { slug: 'housekeeping', label: 'Housekeeping and laundry' },
   { slug: 'companionship', label: 'Companionship' },
+  { slug: 'housekeeping', label: 'Housekeeping and laundry' },
   { slug: 'mobility', label: 'Mobility and walking' },
-  { slug: 'transportation', label: 'Transportation' },
-  { slug: 'errands', label: 'Shopping and errands' },
-  { slug: 'respite', label: 'Respite for family' },
-  { slug: 'overnight', label: 'Overnight care' },
   { slug: 'unsure', label: 'Not sure yet' },
 ];
 

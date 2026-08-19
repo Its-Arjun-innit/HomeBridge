@@ -24,8 +24,12 @@ function Nav({ onNavigate }) {
   );
 }
 
+// Below this, a small scroll shouldn't move the bar — otherwise it flickers.
+const REVEAL_AT = 120;
+
 export default function Header() {
   const menu = useRef(null);
+  const bar = useRef(null);
   const { pathname } = useLocation();
 
   // Close the mobile disclosure whenever the route changes.
@@ -33,8 +37,63 @@ export default function Header() {
     if (menu.current) menu.current.open = false;
   }, [pathname]);
 
+  /**
+   * Hide on scroll down, reveal on scroll up. The class is only acted on by CSS
+   * below 62rem, so desktop is unaffected.
+   */
+  useEffect(() => {
+    let last = window.scrollY;
+    let frame = 0;
+    // Focus inside the bar pins it open. Removing the class once isn't enough:
+    // smooth scrolling and touch momentum keep firing scroll events afterwards,
+    // which would hide the bar again with the visitor's focus still on it.
+    let focusInside = false;
+    // Mobile only. Gated here as well as in CSS so the class is never applied
+    // on desktop, where it would mean nothing today but everything if that rule
+    // ever moved out of its media query.
+    const mobile = window.matchMedia('(max-width: 62rem)');
+
+    const apply = () => {
+      frame = 0;
+      const el = bar.current;
+      if (!el) return;
+      const y = window.scrollY;
+
+      // Never hide while the menu is open — the panel hangs off the bar.
+      const menuOpen = menu.current?.open;
+      const hide = mobile.matches && !menuOpen && !focusInside && y > REVEAL_AT && y > last;
+
+      el.classList.toggle('header--hidden', hide);
+      last = y;
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(apply);
+    };
+    // A keyboard user tabbing into a hidden header would land on something
+    // they cannot see.
+    const el = bar.current;
+    const onFocusIn = () => {
+      focusInside = true;
+      el?.classList.remove('header--hidden');
+    };
+    const onFocusOut = (e) => {
+      if (!el?.contains(e.relatedTarget)) focusInside = false;
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    el?.addEventListener('focusin', onFocusIn);
+    el?.addEventListener('focusout', onFocusOut);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      el?.removeEventListener('focusin', onFocusIn);
+      el?.removeEventListener('focusout', onFocusOut);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
-    <header className="header">
+    <header className="header" ref={bar}>
       <div className="wrap header__bar">
         <Link to="/" className="brand">
           <Icon paths={BRIDGE} size={34} />

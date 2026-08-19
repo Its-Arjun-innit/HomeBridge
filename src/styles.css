@@ -7,13 +7,13 @@
   /* Palette taken from the UX Pilot design export (uxpilot-export-08-19-26.fig).
      Warm paper, sand panels, near-black ink, gold used only as an accent mark —
      it is 2.85:1 on paper, so it never carries text. */
-  --paper: #fbfaf8;
-  --panel: #f3eee3;
+  --paper: #f3eee3;
+  --panel: #e9e1d2;
   --gold: #b09164;
 
   --ink: #1a1a18;
-  --ink-soft: #5c574f; /* 6.9:1 on paper */
-  --line: rgb(26 26 24 / 0.14);
+  --ink-soft: #5c574f; /* 6.6:1 on the beige ground */
+  --line: rgb(26 26 24 / 0.16);
 
   /* Existing token names kept so every page inherits the new look without a
      rename sweep. They now point at the design's values. */
@@ -21,13 +21,13 @@
   --teal-700: #2f2b26;
   --teal-500: #5c574f;
   --teal-100: #e4dccc;
-  --teal-50: #f3eee3;
+  --teal-50: #e9e1d2;
 
-  --sand: #fbfaf8;
+  --sand: #f3eee3;
   --sand-50: #ffffff;
-  --sand-200: #e8e1d4;
+  --sand-200: #ded4c1;
 
-  --clay: #7d6134; /* AA-safe gold for text: 5.5:1 on paper */
+  --clay: #7d6134; /* AA-safe gold for text: 5.3:1 on the beige ground */
   --clay-soft: #b09164;
 
   --on-dark: #e8e4dc;
@@ -39,7 +39,7 @@
 
   --wrap: 1344px;
   --gutter: clamp(1.25rem, 3.4vw, 3rem);
-  --section-y: clamp(4rem, 11vw, 10rem);
+  --section-y: clamp(3rem, 6vw, 5.5rem);
 
   --sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
@@ -136,7 +136,20 @@ a {
   padding-block: var(--section-y);
 }
 .section--tight {
-  padding-block: clamp(2.75rem, 6vw, 4.5rem);
+  padding-block: clamp(2.25rem, 4vw, 3.5rem);
+}
+
+/* Adjacent sections were stacking 158px of padding each — 317px of dead ground
+   between blocks. The preceding section's bottom padding is the gap. */
+.section + .section {
+  padding-top: 0;
+}
+/* Coloured bands keep their own top padding so the block isn't flush against
+   the content above it. */
+.section + .section--teal,
+.section + .section--tint,
+.section + .section--sand50 {
+  padding-top: var(--section-y);
 }
 .section--sand50 {
   background: var(--sand-50);
@@ -293,7 +306,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgb(251 250 248 / 0.92);
+  background: rgb(243 238 227 / 0.9);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--sand-200);
 }
@@ -445,16 +458,30 @@ a {
   }
   /* The phone stays in the bar rather than hiding behind the menu — calling is
      the highest-intent action on the site and most visitors are on a phone.
-     It collapses to the icon so it still fits beside the menu button; the link
-     carries an aria-label so it is announced with the number. */
+     A circular icon button; the link's aria-label carries the number. */
   .header__phone {
-    padding-inline: 0.9rem;
+    width: 48px;
+    height: 48px;
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    flex: none;
   }
   .header__phone-num {
     display: none;
   }
   .menu-toggle {
     display: block;
+  }
+
+  /* Hide on scroll down, return on scroll up — mobile only, where the 77px bar
+     is a real share of the screen. Desktop keeps its always-visible header. */
+  .header {
+    transition: transform var(--dur) var(--ease);
+    will-change: transform;
+  }
+  .header--hidden {
+    transform: translateY(-100%);
   }
 }
 
@@ -1151,7 +1178,7 @@ a {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgb(243 238 227 / 0.2), rgb(243 238 227 / 0.05) 45%);
+  background: linear-gradient(to bottom, rgb(233 225 210 / 0.22), rgb(233 225 210 / 0.06) 45%);
 }
 .section--teal .figure--fade::after,
 .hero .figure--fade::after {
@@ -1347,6 +1374,9 @@ a {
   .figure img {
     transform: none !important;
   }
+  .header {
+    transition: none !important;
+  }
 }
 
 /* Shown when no FAQ answer is finished yet. */
@@ -1444,20 +1474,21 @@ a {
 }
 
 /* ── Values: two columns of tall image panels, the right one dropped 96px ── */
+/* Four across. Was a two-column stagger with 600x800 panels — 2082px of page
+   for one section. */
 .stagger {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(1.5rem, 3.4vw, 3rem);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.2vw, 2rem);
 }
-.stagger > *:nth-child(even) {
-  margin-top: clamp(2rem, 6.7vw, 6rem);
+@media (max-width: 68rem) {
+  .stagger {
+    grid-template-columns: 1fr 1fr;
+  }
 }
-@media (max-width: 52rem) {
+@media (max-width: 40rem) {
   .stagger {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .stagger > *:nth-child(even) {
-    margin-top: 0;
   }
 }
 
@@ -1471,7 +1502,8 @@ a {
   padding-top: 1.5rem;
 }
 .panel__caption h3 {
-  margin-bottom: 0.6rem;
+  font-size: clamp(1.3rem, 1.7vw, 1.5rem);
+  margin-bottom: 0.5rem;
 }
 .panel__caption p {
   /* Design says 14px; held at 16px — the audience is seniors and their families. */
@@ -1487,7 +1519,7 @@ a {
 }
 .row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) 21rem;
+  grid-template-columns: minmax(0, 1fr) 21rem;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.5rem);
   padding-block: clamp(1.75rem, 3.4vw, 3rem);
@@ -1495,11 +1527,15 @@ a {
   text-decoration: none;
   color: inherit;
 }
+/* Above the title, not beside it — a number column pushed every service name
+   80px out of line with the headings above. The .fig stacks them too. */
 .row__num {
-  font-family: var(--serif);
-  font-size: 1.5rem;
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
   color: var(--ink-soft);
-  min-width: 2.5rem;
+  margin-bottom: 0.6rem;
 }
 .row__title {
   font-family: var(--serif);
@@ -1532,10 +1568,9 @@ a {
 }
 @media (max-width: 62rem) {
   .row {
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
   .row__media {
-    grid-column: 1 / -1;
     max-width: none;
     justify-self: stretch;
   }

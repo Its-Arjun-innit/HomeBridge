@@ -87,8 +87,8 @@ export default function Home() {
           {rows.map((s, i) => (
             <Reveal key={s.slug} i={i}>
               <Link className="row" to="/services">
-                <span className="row__num">{String(i + 1).padStart(2, '0')}</span>
                 <span>
+                  <span className="row__num">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="row__title">{s.title}</h3>
                   <p className="row__body">{s.body}</p>
                 </span>
