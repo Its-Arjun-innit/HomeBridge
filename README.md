@@ -49,10 +49,16 @@ build-time warning banner listing how many remain; it disappears once they're go
 
 ## Deploying
 
+**Live on GitHub Pages** at https://homebridgeca.com. Pushing to `main` runs
+`.github/workflows/deploy.yml`, which builds with Vite and publishes `dist/`
+(Pages source = GitHub Actions). `public/CNAME` holds the custom domain.
+
 Static host, output is `dist/`. Because routing is client-side, the host must serve
-`index.html` for unknown paths — without it, a direct visit to `/services` 404s.
-`vercel.json` covers Vercel (in use) and `public/_redirects` covers Netlify. On
-Apache use a `.htaccess` fallback, on nginx `try_files $uri /index.html`.
+a fallback for unknown paths — without it, a direct visit to `/services` 404s.
+Per host: GitHub Pages uses `public/404.html` + the restore snippet in
+`index.html` (redirects unknown paths to the app, preserving the URL); `vercel.json`
+covers Vercel; `public/_redirects` covers Netlify; Apache a `.htaccess` fallback,
+nginx `try_files $uri /index.html`.
 
 ## Assets
 
