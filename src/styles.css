@@ -1786,3 +1786,29 @@ a {
     font-size: 1rem;
   }
 }
+
+/* Submit button while the consent box is unticked.
+
+   Driven by aria-disabled, not the `disabled` attribute: a truly disabled
+   button leaves the tab order and tells a keyboard or screen-reader user
+   nothing about why it is dead. This one stays focusable, announces itself as
+   disabled, and pressing it runs validation so the blocking checkbox gets the
+   error and the focus. */
+.btn[aria-disabled='true'] {
+  background: var(--sand-200);
+  color: var(--ink-soft); /* 4.9:1 on --sand-200 — disabled still has to be legible */
+  border-color: transparent;
+  cursor: not-allowed;
+}
+@media (hover: hover) {
+  .btn[aria-disabled='true']:hover {
+    background: var(--sand-200);
+    color: var(--ink-soft);
+    transform: none;
+    box-shadow: none;
+  }
+}
+.btn[aria-disabled='true']:active {
+  transform: none;
+  box-shadow: none;
+}

@@ -395,7 +395,12 @@ export default function InquiryForm({ variant = 'care', title, note }) {
         {honeypot}
         {consentField}
 
-        <button className="btn btn--accent" type="submit" disabled={status === 'submitting'}>
+        <button
+          className="btn btn--accent"
+          type="submit"
+          disabled={status === 'submitting'}
+          aria-disabled={!values.consent}
+        >
           {status === 'submitting' ? 'Sending…' : 'Send my application'}
         </button>
       </form>
@@ -589,7 +594,12 @@ export default function InquiryForm({ variant = 'care', title, note }) {
           </button>
         )}
         {isLast && (
-          <button className="btn btn--accent" type="submit" disabled={status === 'submitting'}>
+          <button
+            className="btn btn--accent"
+            type="submit"
+            disabled={status === 'submitting'}
+            aria-disabled={!values.consent}
+          >
             {status === 'submitting' ? 'Sending…' : 'Request a consultation'}
           </button>
         )}
