@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import site from '../site.config.js';
 import {
+  LIMITS,
   validateInquiry,
   validateStep,
   validateApplication,
@@ -364,13 +365,18 @@ export default function InquiryForm({ variant = 'care', title, note }) {
           {textField('firstName', 'First name', 'text', {
             required: true,
             autoComplete: 'given-name',
+            maxLength: LIMITS.name,
           })}
           {textField('lastName', 'Last name', 'text', {
             required: true,
             autoComplete: 'family-name',
+            maxLength: LIMITS.name,
           })}
         </div>
-        {textField('email', 'Email address', 'email', { autoComplete: 'email' })}
+        {textField('email', 'Email address', 'email', {
+          autoComplete: 'email',
+          maxLength: LIMITS.email,
+        })}
         {phoneField('Phone number')}
 
         <div className="field">
@@ -382,6 +388,7 @@ export default function InquiryForm({ variant = 'care', title, note }) {
             name="message"
             value={values.message}
             onChange={onInput('message')}
+            maxLength={LIMITS.message}
           />
         </div>
 
@@ -562,6 +569,7 @@ export default function InquiryForm({ variant = 'care', title, note }) {
           {textField('email', 'Email address', 'email', {
             required: true,
             autoComplete: 'email',
+            maxLength: LIMITS.email,
           })}
           {phoneField()}
           {honeypot}

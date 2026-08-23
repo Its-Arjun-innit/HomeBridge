@@ -12,6 +12,15 @@ const POSTAL_CA = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z] ?\d[ABCEGHJ-NPRSTV-Z]
 const digits = (s) => (s.match(/\d/g) || []).length;
 const trim = (v) => (v || '').trim();
 
+/**
+ * Length caps. Enforced here rather than relying on the inputs' maxLength, which
+ * is a UI hint any tampered client ignores. Email cap is the RFC 5321 maximum.
+ */
+export const LIMITS = { name: 100, email: 254, message: 2000 };
+
+const tooLong = (value, max, label) =>
+  (value || '').trim().length > max ? `${label} must be ${max} characters or fewer.` : null;
+
 /** Area codes in service. Alberta only — the business operates in Calgary. */
 export const AREA_CODES = ['403', '587', '780', '825', '368'];
 
@@ -79,13 +88,20 @@ export function validateContact(fields = {}) {
   const email = trim(fields.email);
 
   if (!trim(fields.firstName)) errors.firstName = 'Please enter your first name.';
+  else errors.firstName = tooLong(fields.firstName, LIMITS.name, 'First name') || undefined;
   if (!trim(fields.lastName)) errors.lastName = 'Please enter your last name.';
+  else errors.lastName = tooLong(fields.lastName, LIMITS.name, 'Last name') || undefined;
 
   if (!email) {
     errors.email = 'Please enter your email address so we can reply.';
+  } else if (email.length > LIMITS.email) {
+    errors.email = `Email must be ${LIMITS.email} characters or fewer.`;
   } else if (!EMAIL.test(email)) {
     errors.email = 'That email address doesn’t look right.';
   }
+
+  const longMsg = tooLong(fields.message, LIMITS.message, 'Message');
+  if (longMsg) errors.message = longMsg;
 
   // Phone is optional here — email is the required reply channel.
   Object.assign(errors, validatePhoneParts(fields));
@@ -94,6 +110,9 @@ export function validateContact(fields = {}) {
     errors.consent = 'Please confirm we can email you about your inquiry.';
   }
 
+  // tooLong() yields undefined when the value is fine; drop those so callers
+  // counting Object.keys() don't see phantom errors.
+  Object.keys(errors).forEach((k) => errors[k] === undefined && delete errors[k]);
   return errors;
 }
 
@@ -107,6 +126,7 @@ export const FIELD_ORDER = [
   'email',
   'areaCode',
   'phoneLocal',
+  'message',
   'consent',
 ];
 
@@ -129,7 +149,14 @@ export function validateApplication(fields = {}) {
   const hasPhone = trim(fields.areaCode) || trim(fields.phoneLocal);
 
   if (!trim(fields.firstName)) errors.firstName = 'Please enter your first name.';
+  else if (tooLong(fields.firstName, LIMITS.name, 'First name'))
+    errors.firstName = tooLong(fields.firstName, LIMITS.name, 'First name');
   if (!trim(fields.lastName)) errors.lastName = 'Please enter your last name.';
+  else if (tooLong(fields.lastName, LIMITS.name, 'Last name'))
+    errors.lastName = tooLong(fields.lastName, LIMITS.name, 'Last name');
+
+  const longExp = tooLong(fields.message, LIMITS.message, 'Message');
+  if (longExp) errors.message = longExp;
 
   if (!email && !hasPhone) {
     errors.email = 'Please give us either an email address or a phone number so we can reply.';

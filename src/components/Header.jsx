@@ -13,6 +13,64 @@ const LINKS = [
   { to: '/contact', label: 'Contact' },
 ];
 
+const MORE_LINKS = [
+  { to: '/privacy', label: 'Privacy Policy' },
+  { to: '/terms', label: 'Terms & Conditions' },
+];
+
+/**
+ * The "More" dropdown. A <details> so keyboard and screen-reader behaviour come
+ * for free. Self-contained state because <Nav> renders twice — once in the
+ * desktop bar and once in the mobile panel — and a shared ref would desync them.
+ */
+function MoreMenu({ onNavigate }) {
+  const box = useRef(null);
+  const { pathname } = useLocation();
+  const close = () => {
+    if (box.current) box.current.open = false;
+  };
+
+  // Close on route change, Escape, and clicks outside the menu.
+  useEffect(close, [pathname]);
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && box.current?.open) {
+        close();
+        box.current.querySelector('summary')?.focus();
+      }
+    };
+    const onClickAway = (e) => {
+      if (box.current?.open && !box.current.contains(e.target)) close();
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onClickAway);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onClickAway);
+    };
+  }, []);
+
+  return (
+    <details className="nav-more" ref={box}>
+      <summary>More</summary>
+      <div className="nav-more__panel">
+        {MORE_LINKS.map((l) => (
+          <NavLink
+            key={l.to}
+            to={l.to}
+            onClick={() => {
+              close();
+              onNavigate?.();
+            }}
+          >
+            {l.label}
+          </NavLink>
+        ))}
+      </div>
+    </details>
+  );
+}
+
 function Nav({ onNavigate }) {
   return (
     <nav className="nav" aria-label="Main">
@@ -21,6 +79,7 @@ function Nav({ onNavigate }) {
           {l.label}
         </NavLink>
       ))}
+      <MoreMenu onNavigate={onNavigate} />
     </nav>
   );
 }

@@ -104,6 +104,53 @@ Two deliberate departures, both documented at the point of use in `styles.css`:
 body copy is held at 16px where the design uses 14px, and gold (`#b09164`) is
 2.85:1 on paper so it is used only as a mark, never behind text.
 
+## Security posture
+
+This is a **static site with no backend** — no server, database, accounts,
+sessions, cookies, or file uploads. Runtime dependencies are exactly `react`,
+`react-dom`, `react-router-dom`. That architecture removes most of the usual
+attack surface outright, so the common checklist items (SQL injection, auth
+bypass, session hijacking, password storage, row-level security, upload
+restrictions) have nothing to apply to here.
+
+What is in place:
+
+- **HTTPS enforced** — `http://` 301s to `https://`.
+- **CSP** via `<meta>` in `index.html`, restricting scripts to same-origin,
+  network calls to the form endpoint only, and blocking objects/frames. The
+  SPA-restore snippet lives in `public/spa-restore.js` rather than inline
+  specifically so `script-src` can stay `'self'`. `style-src` needs
+  `'unsafe-inline'` because the pages use React inline `style={{…}}`.
+- **Referrer-Policy** `strict-origin-when-cross-origin`.
+- **Input validation** in `src/validate.js`, including length caps enforced in
+  code (not just `maxLength`, which a tampered client ignores), covered by
+  `npm run check`.
+- **Output escaping** — React escapes by default; no `dangerouslySetInnerHTML`
+  anywhere. `LegalDoc` only allows `/`, `http(s):` and `mailto:` in hrefs.
+- **Bot protection** — honeypot field wired to Web3Forms' `botcheck`, behind
+  their own spam filtering. Deliberately no CAPTCHA: on a care-enquiry form used
+  by seniors and stressed families, the accessibility and conversion cost
+  outweighs a speculative benefit. Revisit if real spam appears.
+- **Dependency scanning** — Dependabot (weekly npm + monthly actions) plus
+  `npm audit --omit=dev --audit-level=high` blocking the deploy. Scoped to
+  runtime deps on purpose: a dev-dependency advisory shouldn't stop a content
+  fix from shipping.
+
+**Known gaps, stated rather than glossed over:**
+
+- **No HSTS, `X-Frame-Options`, or `X-Content-Type-Options`.** These are
+  response headers, and GitHub Pages neither sends them nor allows custom ones.
+  `frame-ancestors` is ignored inside a meta CSP, so **clickjacking protection
+  is not available on this host.** Putting Cloudflare (free tier) or Netlify in
+  front of the site would close all four.
+- **The Web3Forms access key is public.** It's embedded in the bundle because
+  that is how their API works — it isn't a leak. **Restrict it to
+  `homebridgeca.com` in the Web3Forms dashboard**; that is the only real
+  protection against someone reusing it against your quota.
+- **Client-side field tampering is possible** and can't be prevented without a
+  backend. The blast radius is a malformed email to the business — there is no
+  price, role, or record to manipulate.
+
 ## Notes
 
 - Design tokens and all styling live in one file, `src/styles.css`.

@@ -11,6 +11,7 @@ import {
   firstError,
   AREA_CODES,
   OUTSIDE_AREA,
+  LIMITS,
 } from './validate.js';
 import { composePhone } from './format.js';
 
@@ -104,6 +105,24 @@ assert.ok(
 assert.ok(errs({ ...COMPLETE, areaCode: '587', phoneLocal: '55512' }).phoneLocal, 'short local fails');
 assert.equal(validateInquiry(COMPLETE).ok, true, 'phone stays optional');
 assert.ok(errs({ ...COMPLETE, consent: false }).consent);
+
+// ── Length caps: enforced in code, not just by the inputs' maxLength ────────
+assert.equal(validateInquiry({ ...COMPLETE, firstName: 'a'.repeat(LIMITS.name) }).ok, true, 'at the cap is fine');
+assert.ok(errs({ ...COMPLETE, firstName: 'a'.repeat(LIMITS.name + 1) }).firstName, 'over-long first name fails');
+assert.ok(errs({ ...COMPLETE, lastName: 'a'.repeat(LIMITS.name + 1) }).lastName, 'over-long last name fails');
+assert.ok(
+  errs({ ...COMPLETE, email: 'a'.repeat(LIMITS.email) + '@example.com' }).email,
+  'over-long email fails',
+);
+assert.equal(validateInquiry({ ...COMPLETE, message: 'm'.repeat(LIMITS.message) }).ok, true);
+assert.ok(errs({ ...COMPLETE, message: 'm'.repeat(LIMITS.message + 1) }).message, 'over-long message fails');
+assert.ok(
+  validateApplication({
+    firstName: 'Sam', lastName: 'Okafor', email: 'sam@example.com', consent: true,
+    message: 'm'.repeat(LIMITS.message + 1),
+  }).errors.message,
+  'application message is capped too',
+);
 
 // ── Caregiver application: either channel is enough, unlike an inquiry ──────
 const APP = { firstName: 'Sam', lastName: 'Okafor', consent: true };

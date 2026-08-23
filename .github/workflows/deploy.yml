@@ -26,6 +26,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Runtime dependencies only. A build-time dev-dependency advisory has
+      # near-zero impact on a static site, and blocking the owner from shipping
+      # a content fix over one would be disproportionate — Dependabot raises
+      # those as PRs instead (see .github/dependabot.yml).
+      - name: Audit runtime dependencies
+        run: npm audit --omit=dev --audit-level=high
       - run: npm run check
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3

@@ -7,6 +7,14 @@ import { LEGAL_UPDATED } from '../legal.js';
 // for this one job.
 const LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
 
+/**
+ * Only route-relative, http(s), and mailto URLs may reach an href. The content
+ * comes from our own legal.js rather than a visitor, so this is defence in
+ * depth — but a `javascript:` or `data:` URL in an href executes, and refusing
+ * to render one is a great deal cheaper than discovering it later.
+ */
+const isSafeUrl = (url) => /^\/(?!\/)/.test(url) || /^(https?:|mailto:)/i.test(url);
+
 function renderText(text, keyBase) {
   const out = [];
   let last = 0;
@@ -17,7 +25,11 @@ function renderText(text, keyBase) {
     if (m.index > last) out.push(text.slice(last, m.index));
     const [, label, url] = m;
     const key = `${keyBase}-${i++}`;
-    if (url.startsWith('/')) {
+    if (!isSafeUrl(url)) {
+      // Unsafe scheme: show the label as plain text rather than a live link.
+      if (import.meta.env.DEV) console.warn(`LegalDoc: refusing unsafe URL "${url}"`);
+      out.push(label);
+    } else if (url.startsWith('/')) {
       out.push(
         <Link key={key} to={url}>
           {label}

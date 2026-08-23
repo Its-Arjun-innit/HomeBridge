@@ -1691,3 +1691,98 @@ a {
 .footer__legal a {
   font-size: 0.95rem;
 }
+
+/* ---------- "More" nav dropdown ---------- */
+
+.nav-more {
+  position: relative;
+}
+.nav-more > summary {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.75rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease);
+}
+.nav-more > summary::-webkit-details-marker {
+  display: none;
+}
+.nav-more > summary::after {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translate(-0.1rem, -0.1rem);
+  transition: transform var(--dur) var(--ease);
+}
+.nav-more[open] > summary::after {
+  transform: rotate(225deg) translate(-0.05rem, -0.05rem);
+}
+@media (hover: hover) {
+  .nav-more > summary:hover {
+    color: var(--teal-700);
+  }
+}
+
+.nav-more__panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 60;
+  min-width: 14rem;
+  display: grid;
+  padding: 0.4rem;
+  background: var(--sand-50);
+  border: 1px solid var(--sand-200);
+  box-shadow: var(--shadow);
+}
+.nav-more__panel a {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-more__panel a::after {
+  content: none; /* the .nav a underline would be mispositioned here */
+}
+@media (hover: hover) {
+  .nav-more__panel a:hover {
+    background: var(--teal-50);
+    color: var(--teal-700);
+  }
+}
+
+/* Inside the mobile panel the dropdown expands inline rather than floating. */
+@media (max-width: 62rem) {
+  .nav-more__panel {
+    position: static;
+    min-width: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 0 0 0 0.85rem;
+  }
+  .nav-more > summary {
+    min-height: 3.25rem;
+    font-size: 1.1rem;
+  }
+  .nav-more__panel a {
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+}
