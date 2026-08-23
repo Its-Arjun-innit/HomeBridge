@@ -142,15 +142,11 @@ export const helpWithOptions = [
   { slug: 'unsure', label: 'Not sure yet' },
 ];
 
-// Consent wording shown beside the checkbox on the final step.
-//
-// TODO: confirm — have this reviewed before publishing. Under Canada's
-// anti-spam law (CASL) commercial email needs clear consent, your business
-// identified by name, and a working unsubscribe in every message. This text
-// links to a Privacy Policy page that DOES NOT EXIST YET — either write one and
-// add the route, or remove the link. Do not publish it pointing nowhere.
+// Consent wording beside the checkbox on the final step. The form appends a live
+// link to the Privacy Policy after this text, so the sentence stops before it.
+// TODO: confirm — CASL wording; have it reviewed alongside the Privacy Policy.
 export const emailConsent =
-  'By checking this box, I agree to receive email messages from HomeBridge Home Care Services at the address provided. Message frequency may vary based on service needs and inquiry activity. You can unsubscribe at any time using the link in any email, or by replying to ask us to stop. For more details, please refer to our Privacy Policy.';
+  'By checking this box, I agree to receive email messages from HomeBridge Home Care Services at the address provided. Message frequency may vary based on service needs and inquiry activity. You can unsubscribe at any time using the link in any email, or by replying to ask us to stop.';
 
 // FAQ — drafted structure. Every answer that asserts a fact about how
 // HomeBridge operates is marked; confirm each one before publishing.

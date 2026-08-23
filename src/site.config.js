@@ -21,8 +21,8 @@ export default {
     postal: '',
   },
 
-  // TODO: confirm actual availability before publishing this claim.
-  hours: 'Calls answered 24 hours a day, 7 days a week',
+  // Phone-answering hours. Care itself, including overnight, is arranged separately.
+  hours: 'Phone answered Mon–Fri, 9am–5pm MT',
 
   // TODO: confirm — trim to the areas you actually cover. This list also fills
   // the city selector on the inquiry form, so keep it accurate.
@@ -51,5 +51,5 @@ export default {
   //
   // Leave it empty and the form still validates, but refuses to send and shows
   // the phone number instead of posting nowhere.
-  web3formsKey: '',
+  web3formsKey: '9c02108e-07ed-432a-82f9-3e21ff7b203a',
 };

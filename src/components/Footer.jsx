@@ -83,7 +83,10 @@ export default function Footer() {
           <span>
             © {new Date().getFullYear()} HomeBridge Home Care Services. All rights reserved.
           </span>
-          <span>Caring for people, not just for their needs.</span>
+          <nav className="footer__legal" aria-label="Legal">
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms &amp; Conditions</Link>
+          </nav>
         </div>
       </div>
     </footer>

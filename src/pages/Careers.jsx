@@ -46,6 +46,25 @@ export default function Careers() {
         </p>
       </Hero>
 
+      <Section tone="sand50" id="apply">
+        <div className="split">
+          <div data-reveal>
+            <p className="eyebrow">Apply</p>
+            <h2>Tell us about yourself</h2>
+            <p className="lede">
+              Send us your details and a little about your experience. We read every
+              application, and we’ll get back to you either way.
+            </p>
+            <div style={{ marginTop: '2rem' }}>
+              <ImageSlot id="careers-apply" />
+            </div>
+          </div>
+          <div data-reveal style={{ '--i': 1 }}>
+            <InquiryForm variant="careers" title="Caregiver application" />
+          </div>
+        </div>
+      </Section>
+
       <Section tight>
         <div className="split">
           <div data-reveal>
@@ -89,25 +108,6 @@ export default function Careers() {
 
         <div className="band" data-reveal>
           <ImageSlot id="careers-team" />
-        </div>
-      </Section>
-
-      <Section tone="sand50" id="apply">
-        <div className="split">
-          <div data-reveal>
-            <p className="eyebrow">Apply</p>
-            <h2>Tell us about yourself</h2>
-            <p className="lede">
-              Send us your details and a little about your experience. We read every
-              application, and we’ll get back to you either way.
-            </p>
-            <div style={{ marginTop: '2rem' }}>
-              <ImageSlot id="careers-apply" />
-            </div>
-          </div>
-          <div data-reveal style={{ '--i': 1 }}>
-            <InquiryForm variant="careers" title="Caregiver application" />
-          </div>
         </div>
       </Section>
     </>

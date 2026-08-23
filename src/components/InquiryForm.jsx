@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import site from '../site.config.js';
 import {
   validateInquiry,
@@ -327,9 +328,14 @@ export default function InquiryForm({ variant = 'care', title, note }) {
         aria-describedby={errors.consent ? `${variant}-consent-err` : undefined}
       />
       <label htmlFor={`${variant}-consent`}>
-        {careers
-          ? 'It’s okay to contact me about this application.'
-          : emailConsent}
+        {careers ? (
+          'It’s okay to contact me about this application.'
+        ) : (
+          <>
+            {emailConsent} For more details, see our{' '}
+            <Link to="/privacy">Privacy Policy</Link>.
+          </>
+        )}
         {errors.consent && (
           <span className="field-error" id={`${variant}-consent-err`}>
             {errors.consent}

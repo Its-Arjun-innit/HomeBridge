@@ -1645,3 +1645,49 @@ a {
   width: clamp(11rem, 15vw, 14rem);
   height: auto;
 }
+
+/* ---------- Legal pages (Privacy, Terms) ---------- */
+
+.legal {
+  max-width: 46rem;
+}
+.legal__updated {
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 2.5rem;
+}
+.legal__section {
+  margin-bottom: 2.25rem;
+}
+.legal__section h2 {
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  margin-bottom: 0.75rem;
+}
+.legal__section p {
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.legal__section a {
+  color: var(--clay);
+  text-decoration: underline;
+}
+/* Dev-only placeholder paragraph (hidden in production by LegalDoc). */
+.legal__todo {
+  padding: 0.9rem 1.1rem;
+  border-left: 3px solid var(--gold);
+  background: var(--panel);
+  font-style: italic;
+}
+
+/* Legal links in the footer's bottom bar. */
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+.footer__legal a {
+  font-size: 0.95rem;
+}

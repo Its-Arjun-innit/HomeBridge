@@ -5,6 +5,7 @@ import Icon, { PHONE } from './Icon.jsx';
 import { telHref } from '../format.js';
 
 const LINKS = [
+  { to: '/', label: 'Home', end: true },
   { to: '/services', label: 'Services' },
   { to: '/about', label: 'About' },
   { to: '/faq', label: 'FAQ' },
@@ -16,7 +17,7 @@ function Nav({ onNavigate }) {
   return (
     <nav className="nav" aria-label="Main">
       {LINKS.map((l) => (
-        <NavLink key={l.to} to={l.to} onClick={onNavigate}>
+        <NavLink key={l.to} to={l.to} end={l.end} onClick={onNavigate}>
           {l.label}
         </NavLink>
       ))}

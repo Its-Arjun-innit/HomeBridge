@@ -14,6 +14,8 @@ import About from './pages/About.jsx';
 import Careers from './pages/Careers.jsx';
 import FAQ from './pages/FAQ.jsx';
 import Contact from './pages/Contact.jsx';
+import Privacy from './pages/Privacy.jsx';
+import Terms from './pages/Terms.jsx';
 
 // Titles live here rather than in each page — one table, no per-page boilerplate.
 const TITLES = {
@@ -23,6 +25,8 @@ const TITLES = {
   '/faq': 'Questions Families Ask — HomeBridge Home Care Services',
   '/careers': 'Careers — HomeBridge Home Care Services',
   '/contact': 'Contact Us — HomeBridge Home Care Services',
+  '/privacy': 'Privacy Policy — HomeBridge Home Care Services',
+  '/terms': 'Terms & Conditions — HomeBridge Home Care Services',
 };
 
 function Layout({ children }) {
@@ -119,6 +123,8 @@ export default function App() {
           <Route path="/careers" element={<Careers />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

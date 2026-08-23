@@ -17,14 +17,13 @@ Nothing below was guessed or filled in with plausible-sounding text.
 address, hours, and service area. This is the only file you need to edit for those;
 they propagate to the header, footer, and contact page.
 
-**2. Connect the form.** Submissions are delivered by
-[Web3Forms](https://web3forms.com): enter `Admin1@homebridgeca.com` there, they
-email you an access key, and you paste it into `web3formsKey` in
-`src/site.config.js`. Until you do, the form validates normally but refuses to
-submit and shows the phone number instead of silently posting nowhere.
-
-Each submission arrives as a labelled table with a searchable subject line —
-`Care inquiry — Ana Silva — Calgary T2P 1J9 — A parent`.
+**2. The form is connected** to [Web3Forms](https://web3forms.com) and delivers
+to `Admin1@homebridgeca.com` (verified with a live test submission). Each one
+arrives as a labelled table with a searchable subject —
+`Care inquiry — Ana Silva — Calgary T2P 1J9 — A parent`. If delivery ever stops,
+check that the recipient address is still confirmed in the Web3Forms dashboard.
+The access key in `src/site.config.js` is public by design (embedded in the
+page), so committing it is fine.
 
 **Worth a decision before you switch it on:** the form collects a name, phone,
 postal code and *what care is needed*, often about a third party such as a parent
@@ -32,12 +31,16 @@ or spouse. That is health-adjacent personal information under PIPEDA, and it
 passes through Web3Forms' servers on its way to you. Read their terms and confirm
 you're comfortable, or trim what the form asks for.
 
-**2a. Write a Privacy Policy, or cut the link.** *(now urgent — the form sends.)* The email consent text in
-`src/content.js` (`emailConsent`) ends by referring to "our Privacy Policy" —
-**that page does not exist**. Canada's anti-spam law (CASL) requires clear consent,
-your business identified by name, and a working unsubscribe in every commercial
-email. Have this wording reviewed, add the policy page, and wire up unsubscribe in
-whatever sends your mail. Do not publish the consent text pointing at nothing.
+**2a. Finish the legal pages.** There are now real `/privacy` and `/terms` pages
+(`src/legal.js`), linked from the footer and from the form's consent line. Two
+jobs remain, both marked in the file:
+- **Privacy Policy** — resolve the `TODO: confirm` items (data retention period,
+  any mailing address) and **have it reviewed by legal counsel**. It's a solid
+  template covering PIPEDA, Alberta PIPA, CASL and GDPR, but it is not legal
+  advice and hasn't been lawyer-checked.
+- **Terms** — write your own service, fees, and cancellation clauses in
+  `src/legal.js`. Until you do, those sections are hidden from the published page
+  (they show as labelled slots only in `npm run dev`).
 
 **3. Replace the testimonials** in `src/content.js`. They currently render with a
 visible "Placeholder — not a real review" badge. Swap in genuine, attributed reviews
