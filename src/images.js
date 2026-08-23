@@ -86,11 +86,12 @@ export const slots = {
 
   // ── About page ─────────────────────────────────────────────────────────────
   'about-hero': slot('21 / 9', 'Wide banner that says "home" — a porch, a doorway, a lived-in room'),
+  // 3:2 to match the source, so this tight composition isn't cropped at the edges.
   'about-story': slot(
-    '4 / 3',
-    'A caregiver and an older adult together at home',
-    '/media/hero.webp',
-    'A caregiver and an older adult together at home.',
+    '3 / 2',
+    'Supplied by the client',
+    '/media/about-story.webp',
+    'A caregiver’s hands resting gently over an older person’s hands, held close in a moment of comfort.',
   ),
   'about-quote-bg': slot('21 / 9', 'Quiet background image — sits behind the pull quote on the dark band'),
   'about-mission': slot('3 / 4', 'A caregiver listening closely to a client'),
