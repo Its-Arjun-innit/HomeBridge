@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import site from '../site.config.js';
-import Icon, { BRIDGE } from './Icon.jsx';
 import { telHref, isPlaceholder, publishable } from '../format.js';
 
 export default function Footer() {
@@ -13,12 +12,8 @@ export default function Footer() {
       <div className="wrap">
         <div className="footer__grid">
           <div className="footer__brand">
-            <Link to="/" className="brand" style={{ color: '#fff' }}>
-              <Icon paths={BRIDGE} size={34} />
-              <span>
-                <span className="brand__name">HomeBridge</span>
-                <span className="brand__sub">Care Services</span>
-              </span>
+            <Link to="/" className="footer__logo">
+              <img src="/media/logo-full.png" alt={site.name} width="240" height="215" />
             </Link>
             <p style={{ marginTop: '1rem', maxWidth: '22rem' }}>
               Compassionate, personalized care that helps people stay safe, comfortable, and
@@ -31,6 +26,9 @@ export default function Footer() {
             <ul>
               <li>
                 <a href={telHref(site.phone)}>{site.phone}</a>
+              </li>
+              <li>
+                <a href={telHref(site.phoneAlt)}>{site.phoneAlt}</a>
               </li>
               <li>
                 <a href={`mailto:${site.email}`}>{site.email}</a>
@@ -83,7 +81,7 @@ export default function Footer() {
 
         <div className="footer__bottom">
           <span>
-            © {new Date().getFullYear()} HomeBridge Care Services. All rights reserved.
+            © {new Date().getFullYear()} HomeBridge Home Care Services. All rights reserved.
           </span>
           <span>Caring for people, not just for their needs.</span>
         </div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import site from '../site.config.js';
-import Icon, { BRIDGE, PHONE } from './Icon.jsx';
+import Icon, { PHONE } from './Icon.jsx';
 import { telHref } from '../format.js';
 
 const LINKS = [
@@ -96,10 +96,10 @@ export default function Header() {
     <header className="header" ref={bar}>
       <div className="wrap header__bar">
         <Link to="/" className="brand">
-          <Icon paths={BRIDGE} size={34} />
+          <img className="brand__mark" src="/media/logo-mark.png" alt="" width="52" height="37" />
           <span>
             <span className="brand__name">HomeBridge</span>
-            <span className="brand__sub">Care Services</span>
+            <span className="brand__sub">Home Care Services</span>
           </span>
         </Link>
 
@@ -108,7 +108,7 @@ export default function Header() {
         <a
           className="btn btn--primary header__phone"
           href={telHref(site.phone)}
-          aria-label={`Call HomeBridge Care Services at ${site.phone}`}
+          aria-label={`Call HomeBridge Home Care Services at ${site.phone}`}
         >
           <Icon paths={PHONE} size={19} />
           <span className="header__phone-num">{site.phone}</span>

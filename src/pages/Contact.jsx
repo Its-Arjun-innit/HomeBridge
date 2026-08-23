@@ -36,6 +36,8 @@ export default function Contact() {
                   <strong style={{ display: 'block' }}>Phone</strong>
                   <a href={telHref(site.phone)}>{site.phone}</a>
                   <br />
+                  <a href={telHref(site.phoneAlt)}>{site.phoneAlt}</a>
+                  <br />
                   <span style={{ color: 'var(--ink-soft)', fontSize: '1rem' }}>{site.hours}</span>
                 </span>
               </li>

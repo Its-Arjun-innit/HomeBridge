@@ -7,19 +7,23 @@ import {
   formatPostalCode,
   firstError,
   STEPS,
+  AREA_CODES,
+  OUTSIDE_AREA,
 } from '../validate.js';
-import { telHref } from '../format.js';
+import { telHref, composePhone } from '../format.js';
 import { careForOptions, helpWithOptions, emailConsent } from '../content.js';
 import Icon, { CHECK } from './Icon.jsx';
 
 const EMPTY = {
   careFor: '',
   helpWith: [],
+  city: '',
   postalCode: '',
   firstName: '',
   lastName: '',
   email: '',
-  phone: '',
+  areaCode: '',
+  phoneLocal: '',
   message: '',
   consent: false,
 };
@@ -64,7 +68,10 @@ export default function InquiryForm({ variant = 'care', title, note }) {
     setErrors((prev) => {
       // Email and phone are a paired requirement on the application form, so an
       // error raised against one is answered by filling either.
-      const keys = key === 'email' || key === 'phone' ? ['email', 'phone'] : [key];
+      const keys =
+        key === 'email' || key === 'areaCode' || key === 'phoneLocal'
+          ? ['email', 'areaCode', 'phoneLocal']
+          : [key];
       if (!keys.some((k) => prev[k])) return prev;
       const next = { ...prev };
       keys.forEach((k) => delete next[k]);
@@ -106,18 +113,21 @@ export default function InquiryForm({ variant = 'care', title, note }) {
   }
 
   async function submit(payload) {
-    if (!site.formspreeId) {
+    if (!site.web3formsKey) {
       setStatus('unconfigured');
       return;
     }
     setStatus('submitting');
     try {
-      const res = await fetch(`https://formspree.io/f/${site.formspreeId}`, {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ access_key: site.web3formsKey, ...payload }),
       });
-      if (!res.ok) throw new Error(`Formspree responded ${res.status}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || `Web3Forms responded ${res.status}`);
+      }
       setStatus('done');
       setValues(EMPTY);
       setStepIndex(0);
@@ -149,24 +159,41 @@ export default function InquiryForm({ variant = 'care', title, note }) {
     const helpLabels = values.helpWith
       .map((s) => helpWithOptions.find((o) => o.slug === s)?.label || s)
       .join(', ');
+    const phone = composePhone(values.areaCode, values.phoneLocal);
+    const postal = formatPostalCode(values.postalCode) || values.postalCode;
+    const name = `${values.firstName} ${values.lastName}`.trim();
+    const submitted = new Date().toLocaleString('en-CA');
 
+    // Web3Forms renders the payload as a labelled table, so these keys are the
+    // labels that appear in the email. Subject leads with the details you'd
+    // search a mailbox by.
     submit(
       careers
         ? {
-            ...values,
-            _subject: `Caregiver application — ${values.firstName} ${values.lastName}`,
+            subject: `Caregiver application — ${name} — ${phone || values.email}`,
+            from_name: 'HomeBridge website',
+            Name: name,
+            Email: values.email || '—',
+            Phone: phone || '—',
+            Experience: values.message || '—',
+            'Consent given': 'Yes — agreed to be contacted about this application',
+            Submitted: submitted,
+            botcheck: '',
           }
         : {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            phone: values.phone,
-            careFor: values.careFor,
-            helpWith: helpLabels,
-            postalCode: formatPostalCode(values.postalCode) || values.postalCode,
-            message: values.message,
-            consent: values.consent,
-            _subject: `Care inquiry — ${values.firstName} ${values.lastName}`,
+            subject: `Care inquiry — ${name} — ${values.city} ${postal} — ${values.careFor}`,
+            from_name: 'HomeBridge website',
+            Name: name,
+            Email: values.email,
+            Phone: phone || '—',
+            'Who the care is for': values.careFor,
+            'Help needed with': helpLabels,
+            City: values.city,
+            'Postal code': postal,
+            Message: values.message || '—',
+            'Consent given': 'Yes — agreed to be emailed about this inquiry',
+            Submitted: submitted,
+            botcheck: '',
           },
     );
   }
@@ -198,8 +225,9 @@ export default function InquiryForm({ variant = 'care', title, note }) {
       )}
       {status === 'unconfigured' && (
         <p className="form-status form-status--warn">
-          This form isn’t connected yet. Add your Formspree ID to <code>src/site.config.js</code>{' '}
-          to start receiving submissions. In the meantime, please call{' '}
+          This form isn’t connected yet. Add your Web3Forms key to{' '}
+          <code>src/site.config.js</code> to start receiving submissions at{' '}
+          {site.email}. In the meantime, please call{' '}
           <a href={telHref(site.phone)}>{site.phone}</a>.
         </p>
       )}
@@ -237,6 +265,54 @@ export default function InquiryForm({ variant = 'care', title, note }) {
       )}
     </div>
   );
+
+  // Phone as an area-code select plus the remaining 7 digits. Optional on the
+  // inquiry; validation only objects if one half is filled without the other.
+  const phoneField = (label = 'Phone number (optional)') => {
+    const bad = errors.areaCode || errors.phoneLocal;
+    return (
+      <div className={`field${bad ? ' field--error' : ''}`}>
+        <label htmlFor={`${variant}-phoneLocal`}>{label}</label>
+        <div className="field-phone">
+          <select
+            id={`${variant}-areaCode`}
+            name="areaCode"
+            value={values.areaCode}
+            onChange={onInput('areaCode')}
+            ref={(el) => (fieldRefs.current.areaCode = el)}
+            aria-label="Area code"
+            aria-invalid={errors.areaCode ? 'true' : undefined}
+          >
+            <option value="">Area</option>
+            {AREA_CODES.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
+          </select>
+          <input
+            id={`${variant}-phoneLocal`}
+            name="phoneLocal"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel-local"
+            placeholder="437-4067"
+            maxLength={8}
+            value={values.phoneLocal}
+            onChange={onInput('phoneLocal')}
+            ref={(el) => (fieldRefs.current.phoneLocal = el)}
+            aria-invalid={errors.phoneLocal ? 'true' : undefined}
+            aria-describedby={bad ? `${variant}-phone-err` : undefined}
+          />
+        </div>
+        {bad && (
+          <span className="field-error" id={`${variant}-phone-err`}>
+            {errors.areaCode || errors.phoneLocal}
+          </span>
+        )}
+      </div>
+    );
+  };
 
   const consentField = (
     <div className={`field field--check${errors.consent ? ' field--error' : ''}`}>
@@ -289,7 +365,7 @@ export default function InquiryForm({ variant = 'care', title, note }) {
           })}
         </div>
         {textField('email', 'Email address', 'email', { autoComplete: 'email' })}
-        {textField('phone', 'Phone number', 'tel', { autoComplete: 'tel' })}
+        {phoneField('Phone number')}
 
         <div className="field">
           <label htmlFor={`${variant}-message`}>
@@ -393,6 +469,38 @@ export default function InquiryForm({ variant = 'care', title, note }) {
           <p className="form-card__note">
             This tells us whether we have caregivers in your area.
           </p>
+          <div className={`field${errors.city ? ' field--error' : ''}`}>
+            <label htmlFor={`${variant}-city`}>
+              Area
+              <span className="req" aria-hidden="true">
+                {' '}
+                *
+              </span>
+            </label>
+            <select
+              id={`${variant}-city`}
+              name="city"
+              value={values.city}
+              onChange={onInput('city')}
+              ref={(el) => (fieldRefs.current.city = el)}
+              aria-invalid={errors.city ? 'true' : undefined}
+              aria-describedby={errors.city ? `${variant}-city-err` : undefined}
+            >
+              <option value="">Please choose…</option>
+              {site.serviceArea.map((area) => (
+                <option key={area} value={area}>
+                  {area}
+                </option>
+              ))}
+              {/* Someone outside the service area must still be able to ask. */}
+              <option value={OUTSIDE_AREA}>{OUTSIDE_AREA}</option>
+            </select>
+            {errors.city && (
+              <span className="field-error" id={`${variant}-city-err`}>
+                {errors.city}
+              </span>
+            )}
+          </div>
           <div className={`field${errors.postalCode ? ' field--error' : ''}`}>
             <label htmlFor={`${variant}-postalCode`}>
               Postal code
@@ -449,7 +557,7 @@ export default function InquiryForm({ variant = 'care', title, note }) {
             required: true,
             autoComplete: 'email',
           })}
-          {textField('phone', 'Phone number (optional)', 'tel', { autoComplete: 'tel' })}
+          {phoneField()}
           {honeypot}
           {consentField}
         </>

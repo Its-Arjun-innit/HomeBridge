@@ -12,6 +12,29 @@ const POSTAL_CA = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z] ?\d[ABCEGHJ-NPRSTV-Z]
 const digits = (s) => (s.match(/\d/g) || []).length;
 const trim = (v) => (v || '').trim();
 
+/** Area codes in service. Alberta only — the business operates in Calgary. */
+export const AREA_CODES = ['403', '587', '780', '825', '368'];
+
+/** Escape hatch on the city selector so out-of-area visitors aren't blocked. */
+export const OUTSIDE_AREA = 'Outside these areas';
+
+/**
+ * The phone field is split into an area-code select and a 7-digit input.
+ * Phone is optional, but half a phone number is not a phone number: if either
+ * part is filled, both must be.
+ */
+export function validatePhoneParts(fields = {}) {
+  const errors = {};
+  const area = trim(fields.areaCode);
+  const local = trim(fields.phoneLocal);
+  if (!area && !local) return errors; // omitted entirely — fine
+
+  if (!area) errors.areaCode = 'Please choose an area code.';
+  if (!local) errors.phoneLocal = 'Please enter the rest of the number.';
+  else if (digits(local) !== 7) errors.phoneLocal = 'A phone number needs 7 digits after the area code.';
+  return errors;
+}
+
 /** Normalizes to the canonical 'A1A 1A1' form. Returns '' if not valid. */
 export function formatPostalCode(raw) {
   const compact = trim(raw).replace(/\s+/g, '').toUpperCase();
@@ -37,6 +60,8 @@ export function validateStep(step, fields = {}) {
   }
 
   if (step === 'postalCode') {
+    if (!trim(fields.city)) errors.city = 'Please choose the area where care is needed.';
+
     const pc = trim(fields.postalCode);
     if (!pc) errors.postalCode = 'Please enter your postal code.';
     else if (!isPostalCode(pc))
@@ -52,7 +77,6 @@ export function validateStep(step, fields = {}) {
 export function validateContact(fields = {}) {
   const errors = {};
   const email = trim(fields.email);
-  const phone = trim(fields.phone);
 
   if (!trim(fields.firstName)) errors.firstName = 'Please enter your first name.';
   if (!trim(fields.lastName)) errors.lastName = 'Please enter your last name.';
@@ -63,12 +87,8 @@ export function validateContact(fields = {}) {
     errors.email = 'That email address doesn’t look right.';
   }
 
-  // Phone is optional here — email is the required reply channel — but if one is
-  // given it has to be usable. 10 digits in North America, up to 15 with a
-  // country code.
-  if (phone && (digits(phone) < 10 || digits(phone) > 15)) {
-    errors.phone = 'Please enter a phone number including the area code.';
-  }
+  // Phone is optional here — email is the required reply channel.
+  Object.assign(errors, validatePhoneParts(fields));
 
   if (!fields.consent) {
     errors.consent = 'Please confirm we can email you about your inquiry.';
@@ -80,11 +100,13 @@ export function validateContact(fields = {}) {
 export const FIELD_ORDER = [
   'careFor',
   'helpWith',
+  'city',
   'postalCode',
   'firstName',
   'lastName',
   'email',
-  'phone',
+  'areaCode',
+  'phoneLocal',
   'consent',
 ];
 
@@ -104,18 +126,17 @@ export function validateInquiry(fields = {}) {
 export function validateApplication(fields = {}) {
   const errors = {};
   const email = trim(fields.email);
-  const phone = trim(fields.phone);
+  const hasPhone = trim(fields.areaCode) || trim(fields.phoneLocal);
 
   if (!trim(fields.firstName)) errors.firstName = 'Please enter your first name.';
   if (!trim(fields.lastName)) errors.lastName = 'Please enter your last name.';
 
-  if (!email && !phone) {
+  if (!email && !hasPhone) {
     errors.email = 'Please give us either an email address or a phone number so we can reply.';
-  } else {
-    if (email && !EMAIL.test(email)) errors.email = 'That email address doesn’t look right.';
-    if (phone && (digits(phone) < 10 || digits(phone) > 15))
-      errors.phone = 'Please enter a phone number including the area code.';
+  } else if (email && !EMAIL.test(email)) {
+    errors.email = 'That email address doesn’t look right.';
   }
+  Object.assign(errors, validatePhoneParts(fields));
 
   if (!fields.consent) errors.consent = 'Please confirm we can contact you about this application.';
 

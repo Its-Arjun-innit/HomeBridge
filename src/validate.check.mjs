@@ -5,15 +5,20 @@ import {
   validateInquiry,
   validateStep,
   validateApplication,
+  validatePhoneParts,
   isPostalCode,
   formatPostalCode,
   firstError,
+  AREA_CODES,
+  OUTSIDE_AREA,
 } from './validate.js';
+import { composePhone } from './format.js';
 
 const COMPLETE = {
   careFor: 'A parent',
   helpWith: ['personal-care'],
-  postalCode: 'K1A 0B1',
+  city: 'Calgary',
+  postalCode: 'T2P 1J9',
   firstName: 'Ana',
   lastName: 'Silva',
   email: 'ana@example.com',
@@ -25,7 +30,11 @@ const errs = (f) => validateInquiry(f).errors;
 // ── Full inquiry ────────────────────────────────────────────────────────────
 assert.equal(validateInquiry(COMPLETE).ok, true, 'a complete inquiry must pass');
 assert.equal(validateInquiry({}).ok, false, 'an empty inquiry must fail');
-assert.equal(validateInquiry({ ...COMPLETE, phone: '(555) 123-4567' }).ok, true);
+assert.equal(
+  validateInquiry({ ...COMPLETE, areaCode: '587', phoneLocal: '4374067' }).ok,
+  true,
+  'a complete inquiry with a phone must pass',
+);
 
 // ── Step 1: who the care is for ─────────────────────────────────────────────
 assert.ok(validateStep('careFor', {}).errors.careFor);
@@ -47,28 +56,70 @@ assert.ok(!isPostalCode('K1I 0B1'), 'I is never used by Canada Post');
 assert.ok(!isPostalCode('K1A 0B'), 'too short must fail');
 assert.equal(formatPostalCode('k1a0b1'), 'K1A 0B1', 'normalizes to canonical form');
 assert.equal(formatPostalCode('nope'), '', 'invalid input normalizes to empty');
-assert.ok(validateStep('postalCode', { postalCode: '90210' }).errors.postalCode);
-assert.ok(validateStep('postalCode', {}).errors.postalCode, 'blank postal code fails');
+assert.ok(validateStep('postalCode', { city: 'Calgary', postalCode: '90210' }).errors.postalCode);
+assert.ok(validateStep('postalCode', { city: 'Calgary' }).errors.postalCode, 'blank postal code fails');
+
+// ── City selector ───────────────────────────────────────────────────────────
+assert.ok(validateStep('postalCode', { postalCode: 'T2P 1J9' }).errors.city, 'city is required');
+assert.equal(validateStep('postalCode', { city: 'Calgary', postalCode: 'T2P 1J9' }).ok, true);
+assert.equal(
+  validateStep('postalCode', { city: OUTSIDE_AREA, postalCode: 'V6B 4Y8' }).ok,
+  true,
+  'out-of-area visitors must not be blocked from enquiring',
+);
+
+// ── Split phone: area code select + 7-digit input ───────────────────────────
+assert.deepEqual(validatePhoneParts({}), {}, 'phone omitted entirely is fine');
+assert.deepEqual(
+  validatePhoneParts({ areaCode: '587', phoneLocal: '4374067' }),
+  {},
+  'a full number passes',
+);
+assert.ok(validatePhoneParts({ areaCode: '587' }).phoneLocal, 'area code alone fails');
+assert.ok(validatePhoneParts({ phoneLocal: '4374067' }).areaCode, 'local alone fails');
+assert.ok(validatePhoneParts({ areaCode: '587', phoneLocal: '437406' }).phoneLocal, '6 digits fails');
+assert.ok(validatePhoneParts({ areaCode: '587', phoneLocal: '43740677' }).phoneLocal, '8 digits fails');
+assert.ok(
+  validatePhoneParts({ areaCode: '587', phoneLocal: '437-4067' }).phoneLocal === undefined,
+  'formatting characters are ignored',
+);
+assert.ok(AREA_CODES.includes('587') && AREA_CODES.includes('403'), 'both business codes offered');
+
+// composePhone joins the halves, and refuses to build half a number
+assert.equal(composePhone('587', '4374067'), '(587) 437-4067');
+assert.equal(composePhone('403', '629-0632'), '(403) 629-0632');
+assert.equal(composePhone('587', ''), '', 'missing local yields no number');
+assert.equal(composePhone('', '4374067'), '', 'missing area code yields no number');
+assert.equal(composePhone('587', '43740'), '', 'short local yields no number');
 
 // ── Step 4: contact details ─────────────────────────────────────────────────
 assert.ok(errs({ ...COMPLETE, firstName: '  ' }).firstName, 'whitespace first name fails');
 assert.ok(errs({ ...COMPLETE, lastName: '' }).lastName);
 assert.ok(errs({ ...COMPLETE, email: '' }).email, 'email is required on an inquiry');
 assert.ok(errs({ ...COMPLETE, email: 'a@b' }).email, 'missing TLD fails');
-assert.ok(errs({ ...COMPLETE, phone: '555-1234' }).phone, 'short phone fails when supplied');
-assert.equal(validateInquiry({ ...COMPLETE, phone: '' }).ok, true, 'phone stays optional');
+assert.ok(
+  errs({ ...COMPLETE, areaCode: '587', phoneLocal: '5551234' }).phoneLocal === undefined,
+  '7 digits is a valid local number',
+);
+assert.ok(errs({ ...COMPLETE, areaCode: '587', phoneLocal: '55512' }).phoneLocal, 'short local fails');
+assert.equal(validateInquiry(COMPLETE).ok, true, 'phone stays optional');
 assert.ok(errs({ ...COMPLETE, consent: false }).consent);
 
 // ── Caregiver application: either channel is enough, unlike an inquiry ──────
 const APP = { firstName: 'Sam', lastName: 'Okafor', consent: true };
 assert.equal(validateApplication({ ...APP, email: 'sam@example.com' }).ok, true);
-assert.equal(validateApplication({ ...APP, phone: '555-123-4567' }).ok, true);
+assert.equal(validateApplication({ ...APP, areaCode: '403', phoneLocal: '6290632' }).ok, true);
+assert.ok(
+  validateApplication({ ...APP, email: 'sam@example.com', areaCode: '403' }).errors.phoneLocal,
+  'a half-entered phone fails even when email is present',
+);
 assert.ok(validateApplication(APP).errors.email, 'application needs one contact channel');
 assert.ok(validateApplication({ ...APP, email: 'sam@example.com', consent: false }).errors.consent);
 
 // ── Focus target follows visual order, not object key order ─────────────────
 assert.equal(firstError(errs({})), 'careFor');
 assert.equal(firstError(errs({ ...COMPLETE, lastName: '', email: '' })), 'lastName');
+assert.equal(firstError(errs({ ...COMPLETE, city: '', firstName: '' })), 'city', 'city precedes name');
 assert.equal(firstError({}), null);
 
 console.log('validate.check: all assertions passed');

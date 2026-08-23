@@ -1623,3 +1623,25 @@ a {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Area-code select sitting beside the rest of the phone number. */
+.field-phone {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.6rem;
+}
+
+/* Header lockup mark. Height-capped so the bar keeps its rhythm. */
+.brand__mark {
+  height: 2.4rem;
+  width: auto;
+}
+
+/* Full logo lockup in the footer, on the dark band. */
+.footer__logo {
+  display: inline-block;
+}
+.footer__logo img {
+  width: clamp(11rem, 15vw, 14rem);
+  height: auto;
+}

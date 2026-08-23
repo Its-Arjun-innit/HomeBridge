@@ -1,4 +1,4 @@
-# HomeBridge Care Services — website
+# HomeBridge Home Care Services — website
 
 Vite + React, 6 pages, no backend.
 
@@ -17,12 +17,22 @@ Nothing below was guessed or filled in with plausible-sounding text.
 address, hours, and service area. This is the only file you need to edit for those;
 they propagate to the header, footer, and contact page.
 
-**2. Connect the form.** Create a free form at [formspree.io](https://formspree.io),
-then paste the ID into `formspreeId` in `src/site.config.js`. Until you do, the form
-validates normally but refuses to submit and shows a notice instead of silently
-posting nowhere.
+**2. Connect the form.** Submissions are delivered by
+[Web3Forms](https://web3forms.com): enter `Admin1@homebridgeca.com` there, they
+email you an access key, and you paste it into `web3formsKey` in
+`src/site.config.js`. Until you do, the form validates normally but refuses to
+submit and shows the phone number instead of silently posting nowhere.
 
-**2a. Write a Privacy Policy, or cut the link.** The email consent text in
+Each submission arrives as a labelled table with a searchable subject line —
+`Care inquiry — Ana Silva — Calgary T2P 1J9 — A parent`.
+
+**Worth a decision before you switch it on:** the form collects a name, phone,
+postal code and *what care is needed*, often about a third party such as a parent
+or spouse. That is health-adjacent personal information under PIPEDA, and it
+passes through Web3Forms' servers on its way to you. Read their terms and confirm
+you're comfortable, or trim what the form asks for.
+
+**2a. Write a Privacy Policy, or cut the link.** *(now urgent — the form sends.)* The email consent text in
 `src/content.js` (`emailConsent`) ends by referring to "our Privacy Policy" —
 **that page does not exist**. Canada's anti-spam law (CASL) requires clear consent,
 your business identified by name, and a working unsubscribe in every commercial

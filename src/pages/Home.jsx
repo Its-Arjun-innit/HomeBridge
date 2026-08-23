@@ -7,6 +7,7 @@ import CallToAction from '../components/CallToAction.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
 import Reveal from '../components/Reveal.jsx';
 import { values, services, promise, intro } from '../content.js';
+import site from '../site.config.js';
 
 // Layout follows uxpilot-export-08-19-26.fig. The words are HomeBridge's own
 // copy from content.js — only the arrangement comes from the design.
@@ -35,11 +36,11 @@ export default function Home() {
         }
       >
         <p>{intro.lede}</p>
-        {/* Editorial rule from the design: EST. 2024 —— HOMEBRIDGE CARE SERVICES */}
+        {/* Editorial rule from the design: EST. —— HOMEBRIDGE HOME CARE SERVICES */}
         <div className="markrule">
-          <span>Est. 2024</span>
+          <span>Est. {site.established}</span>
           <span className="markrule__line" />
-          <span>HomeBridge Care Services</span>
+          <span>{site.name}</span>
         </div>
       </Hero>
 

@@ -3,7 +3,7 @@
 // are invented — anything needing a fact carries a TODO: confirm marker.
 
 export const intro = {
-  lede: 'At HomeBridge Care Services, we believe that every individual deserves to live with dignity, comfort, and confidence in the place they love most—their home.',
+  lede: 'At HomeBridge Home Care Services, we believe that every individual deserves to live with dignity, comfort, and confidence in the place they love most—their home.',
   body: [
     'We provide compassionate, personalized care that supports seniors and individuals who need assistance with daily living. Our dedicated caregivers help with bathing, grooming, dressing, meal preparation, mobility support, housekeeping, companionship, transportation, and other everyday tasks that make life safer, easier, and more enjoyable.',
     'We understand that care is about more than assistance—it is about preserving independence, fostering meaningful relationships, and bringing peace of mind to families. Every client is treated with respect, kindness, and the attention they deserve.',
@@ -19,7 +19,7 @@ export const promise =
   'To provide compassionate, dependable, and personalized care that enhances well-being, promotes independence, and enriches the lives of those we serve.';
 
 export const mission = [
-  'At HomeBridge Care Services, our mission is to enrich the lives of seniors and individuals requiring support by providing compassionate, reliable, and personalized care that promotes dignity, independence, and well-being.',
+  'At HomeBridge Home Care Services, our mission is to enrich the lives of seniors and individuals requiring support by providing compassionate, reliable, and personalized care that promotes dignity, independence, and well-being.',
   'We are committed to creating meaningful connections, fostering trust, and delivering exceptional care that allows our clients to remain safe, comfortable, and confident in their own homes. Through kindness, respect, and professionalism, we strive to bring peace of mind to families and improve the quality of life of every person we serve.',
   'We believe that everyone deserves to age with dignity, live with purpose, and feel valued, respected, and cared for every day.',
 ];
@@ -150,7 +150,7 @@ export const helpWithOptions = [
 // links to a Privacy Policy page that DOES NOT EXIST YET — either write one and
 // add the route, or remove the link. Do not publish it pointing nowhere.
 export const emailConsent =
-  'By checking this box, I agree to receive email messages from HomeBridge Care Services at the address provided. Message frequency may vary based on service needs and inquiry activity. You can unsubscribe at any time using the link in any email, or by replying to ask us to stop. For more details, please refer to our Privacy Policy.';
+  'By checking this box, I agree to receive email messages from HomeBridge Home Care Services at the address provided. Message frequency may vary based on service needs and inquiry activity. You can unsubscribe at any time using the link in any email, or by replying to ask us to stop. For more details, please refer to our Privacy Policy.';
 
 // FAQ — drafted structure. Every answer that asserts a fact about how
 // HomeBridge operates is marked; confirm each one before publishing.

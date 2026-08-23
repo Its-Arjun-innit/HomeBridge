@@ -4,6 +4,18 @@ export function telHref(phone = '') {
   return `tel:${cleaned.startsWith('+') ? '+' : ''}${cleaned.replace(/\+/g, '')}`;
 }
 
+/**
+ * Joins the area-code select and the 7-digit input into one display number.
+ * Returns '' when either half is missing — phone is optional, and half a phone
+ * number is worse than none.
+ */
+export function composePhone(areaCode = '', local = '') {
+  const a = (areaCode.match(/\d/g) || []).join('');
+  const l = (local.match(/\d/g) || []).join('');
+  if (a.length !== 3 || l.length !== 7) return '';
+  return `(${a}) ${l.slice(0, 3)}-${l.slice(3)}`;
+}
+
 /** True when a site.config value is still an unedited placeholder. */
 export function isPlaceholder(value) {
   return typeof value === 'string' && value.trim().toUpperCase().startsWith('TODO');

@@ -1,16 +1,16 @@
-// Single edit point for going live. Everything marked TODO is a placeholder.
-// Nothing here is a real HomeBridge detail yet — replace before publishing.
+// Single edit point for the business's real details.
 
 export default {
-  name: 'HomeBridge Care Services',
+  name: 'HomeBridge Home Care Services',
   tagline: 'Bridging Care, Comfort, and Independence at Home',
+  established: 2026,
 
-  // TODO: replace with the real business phone. Used in the header button,
-  // footer, and as the fallback when a form submission fails.
-  phone: '(555) 000-0000',
+  // Primary — the header call button and every tel: link.
+  phone: '(587) 437-4067',
+  // Secondary — listed alongside the primary on Contact and in the footer.
+  phoneAlt: '(403) 629-0632',
 
-  // TODO: replace with the real inbox.
-  email: 'care@homebridge.example',
+  email: 'Admin1@homebridgeca.com',
 
   // TODO: fill in, or delete the address block from Footer/Contact if the
   // business has no public office address.
@@ -24,8 +24,9 @@ export default {
   // TODO: confirm actual availability before publishing this claim.
   hours: 'Calls answered 24 hours a day, 7 days a week',
 
-  // TODO: list the real cities / regions served.
-  serviceArea: ['TODO: add the cities and regions you serve'],
+  // TODO: confirm — trim to the areas you actually cover. This list also fills
+  // the city selector on the inquiry form, so keep it accurate.
+  serviceArea: ['Calgary', 'Airdrie', 'Cochrane', 'Chestermere', 'Okotoks', 'Strathmore'],
 
   // Show a labelled placeholder panel wherever a photo hasn't been supplied yet
   // (see src/images.js). Development only — on the live site an unfilled slot
@@ -43,8 +44,12 @@ export default {
   // answered, and the testimonials section disappears until you add real ones.
   showDraftContent: import.meta.env.DEV,
 
-  // Formspree form ID (the part after /f/ in your endpoint URL).
-  // Leave empty and the form refuses to submit rather than posting nowhere.
-  // Get one free at https://formspree.io — no backend required.
-  formspreeId: '',
+  // ── Where form submissions go ──────────────────────────────────────────────
+  // Web3Forms access key. Get one free at https://web3forms.com by entering
+  // Admin1@homebridgeca.com — they email the key straight back, no account.
+  // Paste it here and submissions start arriving at that address.
+  //
+  // Leave it empty and the form still validates, but refuses to send and shows
+  // the phone number instead of posting nowhere.
+  web3formsKey: '',
 };

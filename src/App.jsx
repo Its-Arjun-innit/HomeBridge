@@ -17,12 +17,12 @@ import Contact from './pages/Contact.jsx';
 
 // Titles live here rather than in each page — one table, no per-page boilerplate.
 const TITLES = {
-  '/': 'HomeBridge Care Services — Compassionate In-Home Care',
-  '/services': 'Our Services — HomeBridge Care Services',
-  '/about': 'About Us — HomeBridge Care Services',
-  '/faq': 'Questions Families Ask — HomeBridge Care Services',
-  '/careers': 'Careers — HomeBridge Care Services',
-  '/contact': 'Contact Us — HomeBridge Care Services',
+  '/': 'HomeBridge Home Care Services — Compassionate In-Home Care',
+  '/services': 'Our Services — HomeBridge Home Care Services',
+  '/about': 'About Us — HomeBridge Home Care Services',
+  '/faq': 'Questions Families Ask — HomeBridge Home Care Services',
+  '/careers': 'Careers — HomeBridge Home Care Services',
+  '/contact': 'Contact Us — HomeBridge Home Care Services',
 };
 
 function Layout({ children }) {
@@ -35,7 +35,7 @@ function Layout({ children }) {
   }, []);
 
   useEffect(() => {
-    document.title = TITLES[pathname] || 'HomeBridge Care Services';
+    document.title = TITLES[pathname] || 'HomeBridge Home Care Services';
     window.scrollTo(0, 0);
   }, [pathname]);
 

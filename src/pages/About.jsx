@@ -9,7 +9,7 @@ import { mission, vision, promise, values, intro } from '../content.js';
 export default function About() {
   return (
     <>
-      <Hero title="About HomeBridge Care Services" slot="about-hero" image="/media/hero.webp">
+      <Hero title="About HomeBridge Home Care Services" slot="about-hero" image="/media/hero.webp">
         <p>{intro.lede}</p>
       </Hero>
 

@@ -28,9 +28,9 @@ export const slots = {
   'home-band': slot('21 / 9', 'Wide, calm shot of a home interior — a kitchen table, a sunlit window'),
   'home-story': slot(
     '4 / 3',
-    'Supplied by the design export',
-    '/media/family-story.webp',
-    'A thoughtful woman in soft natural light.',
+    'Supplied by the client',
+    '/media/home-story.webp',
+    'An elderly couple walking arm in arm along a tree-lined road, one steadying himself with a cane.',
   ),
   'home-cta-bg': slot('21 / 9', 'Soft, out-of-focus home background — this sits behind text, so nothing busy'),
 
@@ -43,8 +43,18 @@ export const slots = {
   'home-service-companionship': slot('4 / 3', 'Two people talking over tea, laughing'),
 
   // ── Photography from the design export ─────────────────────────────────────
-  'value-compassion': slot('3 / 4', 'From the design export', '/media/value-compassion.webp', 'A caregiver gently assisting someone seated in a warm, light-filled room.'),
-  'value-personalized': slot('3 / 4', 'From the design export', '/media/value-personalized.webp', 'An older person’s hands resting in a caregiver’s hands.'),
+  'value-compassion': slot(
+    '3 / 4',
+    'Supplied by the client',
+    '/media/value-compassion.webp',
+    'A smiling caregiver leaning in beside an older woman with white hair in a bright, plant-filled room.',
+  ),
+  'value-personalized': slot(
+    '3 / 4',
+    'Supplied by the client',
+    '/media/value-personalized.webp',
+    'A caregiver’s hands supporting an older person’s hands as they rest on a walking cane.',
+  ),
   'value-reliable': slot('3 / 4', 'From the design export', '/media/value-reliable.webp', 'A quiet living-room corner with a cup of tea and an open book.'),
   'value-dignity': slot('3 / 4', 'From the design export', '/media/value-dignity.webp', 'An older man gardening in a sunlit courtyard, hands in the soil.'),
   'svc-personal-care': slot('21 / 10', 'From the design export', '/media/svc-personal-care.webp', 'Gentle assistance with everyday tasks at home.'),
