@@ -19,7 +19,7 @@ export const privacy = [
     heading: 'Who we are',
     body: [
       'HomeBridge Home Care Services (“HomeBridge”, “we”, “us”) provides in-home care for seniors and individuals needing daily-living support in the Calgary area, Alberta, Canada.',
-      'For any question about this policy or your personal information, contact us at [Admin1@homebridgeca.com](mailto:Admin1@homebridgeca.com) or (587) 437-4067. TODO: confirm — add a mailing address if you have one, and name a specific privacy contact if it is not the general inbox.',
+      'For any question about this policy or your personal information, contact us at [admin@homebridgeca.com](mailto:admin@homebridgeca.com) or (587) 437-4067. TODO: confirm — add a mailing address if you have one, and name a specific privacy contact if it is not the general inbox.',
     ],
   },
   {
@@ -66,7 +66,7 @@ export const privacy = [
     heading: 'Your rights and choices',
     body: [
       'Under Canadian privacy law (PIPEDA and Alberta’s PIPA), you may ask to see the personal information we hold about you, ask us to correct it, and withdraw your consent to our use of it. You can unsubscribe from our emails at any time using the link in any message, or by replying to ask us to stop, as required by CASL.',
-      'If you are in the European Economic Area or the United Kingdom, you additionally have rights under the GDPR to access, correct, erase, restrict, or object to our processing of your information, and to data portability. To exercise any of these, contact us at [Admin1@homebridgeca.com](mailto:Admin1@homebridgeca.com). We will respond within the time the applicable law requires.',
+      'If you are in the European Economic Area or the United Kingdom, you additionally have rights under the GDPR to access, correct, erase, restrict, or object to our processing of your information, and to data portability. To exercise any of these, contact us at [admin@homebridgeca.com](mailto:admin@homebridgeca.com). We will respond within the time the applicable law requires.',
     ],
   },
   {
@@ -84,7 +84,7 @@ export const privacy = [
   {
     heading: 'How to reach us, or make a complaint',
     body: [
-      'For any privacy question or request, contact us first at [Admin1@homebridgeca.com](mailto:Admin1@homebridgeca.com). If you are not satisfied with our response, you may contact the [Office of the Privacy Commissioner of Canada](https://www.priv.gc.ca/), or the [Office of the Information and Privacy Commissioner of Alberta](https://www.oipc.ab.ca/). Visitors in the EEA or UK may also complain to their local data protection supervisory authority.',
+      'For any privacy question or request, contact us first at [admin@homebridgeca.com](mailto:admin@homebridgeca.com). If you are not satisfied with our response, you may contact the [Office of the Privacy Commissioner of Canada](https://www.priv.gc.ca/), or the [Office of the Information and Privacy Commissioner of Alberta](https://www.oipc.ab.ca/). Visitors in the EEA or UK may also complain to their local data protection supervisory authority.',
     ],
   },
 ];
@@ -155,7 +155,7 @@ export const terms = [
   {
     heading: 'Contact',
     body: [
-      'Questions about these terms? Email us at [Admin1@homebridgeca.com](mailto:Admin1@homebridgeca.com) or call (587) 437-4067.',
+      'Questions about these terms? Email us at [admin@homebridgeca.com](mailto:admin@homebridgeca.com) or call (587) 437-4067.',
     ],
   },
 ];

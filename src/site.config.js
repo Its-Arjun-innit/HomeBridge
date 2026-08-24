@@ -10,7 +10,7 @@ export default {
   // Secondary — listed alongside the primary on Contact and in the footer.
   phoneAlt: '(403) 629-0632',
 
-  email: 'Admin1@homebridgeca.com',
+  email: 'admin@homebridgeca.com',
 
   // TODO: fill in, or delete the address block from Footer/Contact if the
   // business has no public office address.
@@ -45,9 +45,14 @@ export default {
   showDraftContent: import.meta.env.DEV,
 
   // ── Where form submissions go ──────────────────────────────────────────────
-  // Web3Forms access key. Get one free at https://web3forms.com by entering
-  // Admin1@homebridgeca.com — they email the key straight back, no account.
-  // Paste it here and submissions start arriving at that address.
+  // Web3Forms access key. IMPORTANT: the recipient address is bound to the KEY,
+  // set in the Web3Forms dashboard — it is NOT taken from `email` above and is
+  // not part of the request payload. Changing `email` only changes what the site
+  // displays. To actually redirect delivery, either change the recipient for
+  // this key in the dashboard, or create a new key for the new address and paste
+  // it here.
+  //
+  // This key was originally issued for Admin1@homebridgeca.com.
   //
   // Leave it empty and the form still validates, but refuses to send and shows
   // the phone number instead of posting nowhere.

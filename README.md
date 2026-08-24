@@ -15,13 +15,16 @@ Pages: Home, Services, About, FAQ, Careers, Contact, Privacy Policy, Terms.
 ## Already done — don't redo these
 
 - **Contact details are real.** Phone `(587) 437-4067`, alternate
-  `(403) 629-0632`, email `Admin1@homebridgeca.com`, hours *Mon–Fri 9am–5pm MT*.
+  `(403) 629-0632`, email `admin@homebridgeca.com`, hours *Mon–Fri 9am–5pm MT*.
   All live in `src/site.config.js` and propagate to the header, footer, and
   Contact page.
-- **The form delivers.** Submissions reach `Admin1@homebridgeca.com` via
-  [Web3Forms](https://web3forms.com), verified with a live test. Each arrives as
-  a labelled table with a searchable subject —
+- **The form delivers** via [Web3Forms](https://web3forms.com). Each submission
+  arrives as a labelled table with a searchable subject —
   `Care inquiry — Ana Silva — Calgary T2P 1J9 — A parent`.
+  **Check the recipient:** the destination is bound to the access key in the
+  Web3Forms dashboard, not to `email` in `site.config.js`. The key was issued for
+  `Admin1@homebridgeca.com`; the site now displays `admin@homebridgeca.com`. If
+  you have not repointed the key, submissions are still landing in the old inbox.
 - **Legal pages exist** at `/privacy` and `/terms`, linked from the footer and
   the "More" nav menu. They still need finishing — see below.
 
